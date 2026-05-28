@@ -280,7 +280,7 @@
 }
 .button:focused {
     -fx-background-color: #FFFFFF, rgba(0,0,0,0.06), #FFFFFF;
-    -fx-border-color:     #4A7C6F;
+    -fx-border-color:     hwb(164 29% 51%);
     -fx-border-width:     2;
     -fx-effect:           dropshadow(gaussian, rgba(74,124,111,0.25), 4, 0, 0, 0);
 }

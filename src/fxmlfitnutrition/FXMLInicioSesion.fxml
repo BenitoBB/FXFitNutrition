@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="mainFxmlClass" stylesheets="@css/light-modern.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.FXMLInicioSesionController">
+   <children>
+      <Pane layoutX="390.0" layoutY="160.0" prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: #fbfbfb; -fx-border-color: #e5e5e5; -fx-border-radius: 5px;">
+         <children>
+            <TextField layoutX="67.0" layoutY="156.0" prefHeight="42.0" prefWidth="366.0" />
+            <Label layoutX="68.0" layoutY="137.0" styleClass="label-sm" text="Correo" />
+            <PasswordField layoutX="67.0" layoutY="237.0" prefHeight="42.0" prefWidth="366.0" />
+            <Label layoutX="68.0" layoutY="216.0" styleClass="label-sm" text="Contraseña" />
+            <Button layoutX="68.0" layoutY="308.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="366.0" styleClass="button-primary" text="Iniciar Sesión" />
+            <Label layoutX="157.0" layoutY="86.0" styleClass="label-base" text="Ingresa tu correo y contraseña" textFill="#757474">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="179.0" layoutY="54.0" prefHeight="24.0" prefWidth="127.0" styleClass="label-title" text="Inicia sesión">
+               <font>
+                  <Font name="Segoe UI Bold" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
