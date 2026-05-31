@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputControl;
 import javafx.stage.StageStyle;
 
 public class Utilidades {
@@ -69,5 +70,52 @@ public class Utilidades {
             }
         }
         return textoFormateado.toString().trim();
+    }
+
+    public static void permitirSoloLetras(TextInputControl campo) {
+        aplicarFiltroTexto(campo, "[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]");
+    }
+
+    public static void permitirSoloNumerosDecimales(TextInputControl campo) {
+        if (campo == null) {
+            return;
+        }
+        campo.textProperty().addListener((observable, anterior, nuevo) -> {
+            if (nuevo == null) {
+                return;
+            }
+            String filtrado = nuevo.replaceAll("[^0-9.]", "");
+            int primerPunto = filtrado.indexOf('.');
+            if (primerPunto >= 0) {
+                filtrado = filtrado.substring(0, primerPunto + 1)
+                        + filtrado.substring(primerPunto + 1).replace(".", "");
+            }
+            if (!nuevo.equals(filtrado)) {
+                campo.setText(filtrado);
+            }
+        });
+    }
+
+    public static void permitirLetrasNumeros(TextInputControl campo) {
+        aplicarFiltroTexto(campo, "[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9\\s.,;:()\\-]");
+    }
+
+    public static void permitirBusquedaNombreCorreo(TextInputControl campo) {
+        aplicarFiltroTexto(campo, "[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9\\s@._\\-]");
+    }
+
+    private static void aplicarFiltroTexto(TextInputControl campo, String patronInvalido) {
+        if (campo == null) {
+            return;
+        }
+        campo.textProperty().addListener((observable, anterior, nuevo) -> {
+            if (nuevo == null) {
+                return;
+            }
+            String filtrado = nuevo.replaceAll(patronInvalido, "");
+            if (!nuevo.equals(filtrado)) {
+                campo.setText(filtrado);
+            }
+        });
     }
 }
