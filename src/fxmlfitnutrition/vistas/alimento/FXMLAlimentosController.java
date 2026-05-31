@@ -1,6 +1,5 @@
 package fxmlfitnutrition.vistas.alimento;
 
-
 import dominio.AlimentoImp;
 import java.io.IOException;
 import java.net.URL;
@@ -67,6 +66,16 @@ public class FXMLAlimentosController implements Initializable, NotificacionOpera
         abrirFormulario(null);
     }
 
+    @FXML
+    private void clicEditar(ActionEvent event) {
+        Alimento alimentoSeleccionado = tvAlimentos.getSelectionModel().getSelectedItem();
+        if (alimentoSeleccionado == null) {
+            Utilidades.mostrarAlertaSimple("Atencion", "Selecciona un alimento.", Alert.AlertType.WARNING);
+            return;
+        }
+        abrirFormulario(alimentoSeleccionado);
+    }
+
     private void abrirFormulario(Alimento alimento) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLFormularioAlimento.fxml"));
@@ -89,4 +98,11 @@ public class FXMLAlimentosController implements Initializable, NotificacionOpera
         }
     }
 
+    @Override
+    public void notificarOperacionGuardar() {
+        String criterio = tfBuscar.getText() != null ? tfBuscar.getText().trim() : "";
+        if (criterio.length() == 0 || criterio.length() >= 2) {
+            cargarAlimentos(criterio);
+        }
+    }
 }
