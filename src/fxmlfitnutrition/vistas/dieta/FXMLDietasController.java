@@ -95,4 +95,46 @@ public class FXMLDietasController implements Initializable, NotificacionOperacio
         }
     }
 
+    @FXML
+    private void clicEditar(ActionEvent event) {
+        Dieta dietaSeleccionada = tvDietas.getSelectionModel().getSelectedItem();
+        if (dietaSeleccionada == null) {
+            Utilidades.mostrarAlertaSimple("Atencion", "Selecciona una dieta.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (dietaSeleccionada.getEditable() == 0) {
+            Utilidades.mostrarAlertaSimple("Dieta Bloqueada", "La dieta esta asignada a mas de un paciente y no puede editarse.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        DietaDetalle detalle = DietaImp.obtenerDetalle(dietaSeleccionada.getIdDieta());
+        if (detalle == null) {
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo obtener el detalle de la dieta.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLFormularioDieta.fxml"));
+            Parent root = fxmlLoader.load();
+
+            FXMLFormularioDietaController controlador = fxmlLoader.getController();
+            controlador.inicializarValores(this);
+            controlador.inicializarParaEdicion(detalle);
+
+            Stage stage = new Stage();
+            stage.setTitle("Modificar Dieta");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo cargar el formulario de dieta.", Alert.AlertType.ERROR);
+        }
+    }
+
+    @Override
+    public void notificarOperacionGuardar() {
+        cargarDietas();
+    }
 }
