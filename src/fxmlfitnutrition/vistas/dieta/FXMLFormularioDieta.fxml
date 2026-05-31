@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="760.0" prefWidth="780.0" stylesheets="@../../css/light-modern.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.vistas.dieta.FXMLFormularioDietaController">
+   <children>
+      <Label fx:id="lbTitulo" layoutX="30.0" layoutY="20.0" styleClass="label-title" text="Nueva Dieta">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+
+      <VBox layoutX="30.0" layoutY="70.0" prefWidth="720.0" spacing="12.0">
+         <children>
+            <Label text="Nombre de la dieta" />
+            <TextField fx:id="tfNombreDieta" prefHeight="38.0" promptText="Ej. Plan bajo en sodio" />
+
+            <Label text="Observaciones generales" />
+            <TextArea fx:id="taObservaciones" prefHeight="90.0" promptText="Indicaciones generales de la dieta" wrapText="true" />
+
+            <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="12.0">
+               <children>
+                  <Label text="Categorias de horario">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btnAgregarCategoria" mnemonicParsing="false" onAction="#clicAgregarCategoria" prefHeight="34.0" styleClass="button-info" text="+ Agregar Horario" />
+               </children>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" prefHeight="175.0">
+               <content>
+                  <VBox fx:id="vbCategorias" prefWidth="700.0" spacing="10.0" />
+               </content>
+            </ScrollPane>
+
+            <VBox fx:id="vbEdicionAlimentos" spacing="10.0" visible="false" managed="false">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="12.0">
+                     <children>
+                        <Label text="Alimentos por categoria">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbTotalCalorias" text="0.00 kcal" />
+                     </children>
+                  </HBox>
+
+                  <ComboBox fx:id="cbCategoriaEdicion" prefHeight="36.0" prefWidth="720.0" promptText="Selecciona una categoria" />
+
+                  <TableView fx:id="tvAlimentosCategoria" prefHeight="145.0" prefWidth="720.0">
+                     <columns>
+                        <TableColumn fx:id="colAlimento" prefWidth="260.0" text="Alimento" />
+                        <TableColumn fx:id="colPorcion" prefWidth="150.0" text="Porcion" />
+                        <TableColumn fx:id="colCantidad" prefWidth="110.0" text="Cantidad" />
+                        <TableColumn fx:id="colCalorias" prefWidth="170.0" text="Calorias" />
+                     </columns>
+                  </TableView>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                     <children>
+                        <TextField fx:id="tfBuscarAlimento" prefHeight="36.0" prefWidth="190.0" promptText="Buscar alimento" />
+                        <ComboBox fx:id="cbAlimento" prefHeight="36.0" prefWidth="230.0" promptText="Alimento" />
+                        <Spinner fx:id="spCantidad" editable="true" prefHeight="36.0" prefWidth="95.0" />
+                        <Button fx:id="btnAgregarAlimento" mnemonicParsing="false" onAction="#clicAgregarAlimento" prefHeight="36.0" styleClass="button-primary" text="Agregar" />
+                        <Button fx:id="btnQuitarAlimento" mnemonicParsing="false" onAction="#clicQuitarAlimento" prefHeight="36.0" styleClass="button-danger" text="Quitar" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" spacing="12.0">
+               <children>
+                  <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#clicCancelar" prefHeight="40.0" styleClass="button-secondary" text="Cancelar" />
+                  <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#clicGuardar" prefHeight="40.0" styleClass="button-primary" text="Guardar" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="660.0" prefWidth="1030.0" stylesheets="@../../css/light-modern.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.vistas.dieta.FXMLDietasController">
+   <children>
+      <Label layoutX="30.0" layoutY="20.0" styleClass="label-title" text="Gestion de Dietas">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+
+      <HBox alignment="CENTER_RIGHT" layoutX="30.0" layoutY="70.0" prefHeight="50.0" prefWidth="970.0" spacing="12.0">
+         <children>
+            <Button fx:id="btnCrear" mnemonicParsing="false" onAction="#clicNuevaDieta" prefHeight="40.0" styleClass="button-primary" text="Nueva Dieta" />
+            <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#clicEditar" prefHeight="40.0" styleClass="button-edit" text="Editar" />
+            <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#clicEliminar" prefHeight="40.0" styleClass="button-danger" text="Eliminar" />
+         </children>
+      </HBox>
+
+      <TableView fx:id="tvDietas" layoutX="30.0" layoutY="140.0" prefHeight="470.0" prefWidth="570.0">
+         <columns>
+            <TableColumn fx:id="colNombreDieta" prefWidth="260.0" text="Dieta" />
+            <TableColumn fx:id="colTotalCalorias" prefWidth="150.0" text="Calorias" />
+            <TableColumn fx:id="colEditable" prefWidth="150.0" text="Editable" />
+         </columns>
+      </TableView>
+
+      <Label layoutX="630.0" layoutY="140.0" text="Detalle de la dieta">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <TreeView fx:id="tvDetalleDieta" layoutX="630.0" layoutY="175.0" prefHeight="435.0" prefWidth="370.0" />
+   </children>
+</AnchorPane>
