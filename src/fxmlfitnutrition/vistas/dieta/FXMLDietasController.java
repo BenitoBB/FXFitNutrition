@@ -70,11 +70,6 @@ public class FXMLDietasController implements Initializable, NotificacionOperacio
         });
     }
 
-    private void cargarDietas() {
-        dietas.clear();
-        dietas.addAll(DietaImp.obtenerTodas());
-    }
-
     @FXML
     private void clicNuevaDieta(ActionEvent event) {
         try {
@@ -131,6 +126,49 @@ public class FXMLDietasController implements Initializable, NotificacionOperacio
             e.printStackTrace();
             Utilidades.mostrarAlertaSimple("Error", "No se pudo cargar el formulario de dieta.", Alert.AlertType.ERROR);
         }
+    }
+
+    private void cargarDetalle(Dieta dieta) {
+        if (dieta == null) {
+            tvDetalleDieta.setRoot(null);
+            return;
+        }
+
+        DietaDetalle detalle = DietaImp.obtenerDetalle(dieta.getIdDieta());
+        if (detalle == null) {
+            TreeItem<String> raizError = new TreeItem<>("No se pudo cargar el detalle");
+            raizError.setExpanded(true);
+            tvDetalleDieta.setRoot(raizError);
+            return;
+        }
+
+        TreeItem<String> raiz = new TreeItem<>(detalle.getNombreDieta()
+                + " - " + String.format("%.2f kcal", detalle.getTotalCalorias()));
+        raiz.setExpanded(true);
+
+        if (detalle.getCategorias() != null) {
+            for (CategoriaConAlimentos categoria : detalle.getCategorias()) {
+                TreeItem<String> itemCategoria = new TreeItem<>(categoria.getNombreCategoria());
+                itemCategoria.setExpanded(true);
+
+                if (categoria.getAlimentos() == null || categoria.getAlimentos().isEmpty()) {
+                    itemCategoria.getChildren().add(new TreeItem<>("Sin alimentos"));
+                } else {
+                    for (AlimentoEnDieta alimento : categoria.getAlimentos()) {
+                        itemCategoria.getChildren().add(new TreeItem<>(
+                                alimento.getNombreAlimento()
+                                + " | " + alimento.getCantidad()
+                                + " x " + alimento.getPorcion()
+                                + " | " + String.format("%.2f kcal", alimento.getCaloriasTotales())
+                        ));
+                    }
+                }
+
+                raiz.getChildren().add(itemCategoria);
+            }
+        }
+
+        tvDetalleDieta.setRoot(raiz);
     }
 
     @Override

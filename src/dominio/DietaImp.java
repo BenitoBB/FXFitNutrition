@@ -85,4 +85,27 @@ public class DietaImp {
         return respuesta;
     }
 
+    public static RespuestaSimple eliminarDieta(int idDieta) {
+        RespuestaSimple respuesta = new RespuestaSimple();
+        respuesta.setError(true);
+
+        try {
+            RespuestaHTTP http = ConexionAPI.peticionSinBody(
+                    Constantes.URL_WS + "dieta/eliminar/" + idDieta,
+                    Constantes.PETICION_DELETE
+            );
+
+            if (http.getCodigo() == 200) {
+                Gson gson = new Gson();
+                respuesta = gson.fromJson(http.getContenido(), RespuestaSimple.class);
+            } else {
+                respuesta.setMensaje(Constantes.MSJ_ERROR_PETICION);
+            }
+        } catch (Exception e) {
+            respuesta.setMensaje(Constantes.MSJ_DEFAULT);
+            e.printStackTrace();
+        }
+
+        return respuesta;
+    }
 }
