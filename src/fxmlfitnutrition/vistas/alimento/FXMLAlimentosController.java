@@ -98,6 +98,22 @@ public class FXMLAlimentosController implements Initializable, NotificacionOpera
         }
     }
 
+    private void buscarAlimentosEnTiempoReal() {
+        String criterio = tfBuscar.getText() != null ? tfBuscar.getText().trim() : "";
+        if (criterio.length() == 1) {
+            alimentos.clear();
+            btnEditar.setDisable(true);
+            return;
+        }
+
+        cargarAlimentos(criterio);
+    }
+
+    private void cargarAlimentos(String criterio) {
+        alimentos.clear();
+        alimentos.addAll(AlimentoImp.buscarAlimentos(criterio));
+    }
+
     @Override
     public void notificarOperacionGuardar() {
         String criterio = tfBuscar.getText() != null ? tfBuscar.getText().trim() : "";

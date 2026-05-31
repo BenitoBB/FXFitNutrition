@@ -67,4 +67,27 @@ public class AlimentoImp {
 
         return respuesta;
     }
+
+    public static List<Alimento> buscarAlimentos(String nombre) {
+        String criterio = nombre != null ? nombre.trim() : "";
+        if (criterio.length() == 1) {
+            return new ArrayList<>();
+        }
+
+        try {
+            RespuestaHTTP http = ConexionAPI.peticionGET(
+                    Constantes.URL_WS + "alimento/buscar?nombre=" + URLEncoder.encode(criterio, "UTF-8")
+            );
+
+            if (http.getCodigo() == 200 && http.getContenido() != null && http.getContenido().trim().startsWith("[")) {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Alimento>>(){}.getType();
+                return gson.fromJson(http.getContenido(), listType);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<>();
+    }
 }
