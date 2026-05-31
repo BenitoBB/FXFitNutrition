@@ -70,6 +70,11 @@ public class FXMLDietasController implements Initializable, NotificacionOperacio
         });
     }
 
+    private void cargarDietas() {
+        dietas.clear();
+        dietas.addAll(DietaImp.obtenerTodas());
+    }
+
     @FXML
     private void clicNuevaDieta(ActionEvent event) {
         try {
@@ -125,6 +130,37 @@ public class FXMLDietasController implements Initializable, NotificacionOperacio
         } catch (IOException e) {
             e.printStackTrace();
             Utilidades.mostrarAlertaSimple("Error", "No se pudo cargar el formulario de dieta.", Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void clicEliminar(ActionEvent event) {
+        Dieta dietaSeleccionada = tvDietas.getSelectionModel().getSelectedItem();
+        if (dietaSeleccionada == null) {
+            Utilidades.mostrarAlertaSimple("Atencion", "Selecciona una dieta.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle("Eliminar Dieta");
+        alerta.setHeaderText("Confirmar eliminacion");
+        alerta.setContentText("La dieta se eliminara del catalogo si no esta en uso.");
+        Optional<ButtonType> respuestaConfirmacion = alerta.showAndWait();
+        if (!respuestaConfirmacion.isPresent() || respuestaConfirmacion.get() != ButtonType.OK) {
+            return;
+        }
+
+        RespuestaSimple respuesta = DietaImp.eliminarDieta(dietaSeleccionada.getIdDieta());
+        if (!respuesta.isError()) {
+            Utilidades.mostrarAlertaSimple("Dieta Eliminada", "La dieta se elimino correctamente.", Alert.AlertType.INFORMATION);
+            cargarDietas();
+            tvDetalleDieta.setRoot(null);
+        } else {
+            String mensaje = respuesta.getMensaje() != null ? respuesta.getMensaje() : "";
+            if (mensaje.toLowerCase().contains("consulta") || mensaje.toLowerCase().contains("foreign key")) {
+                mensaje = "La dieta está asignada a consultas y no puede eliminarse.";
+            }
+            Utilidades.mostrarAlertaSimple("Error", mensaje, Alert.AlertType.ERROR);
         }
     }
 

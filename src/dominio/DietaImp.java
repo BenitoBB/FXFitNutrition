@@ -43,6 +43,21 @@ public class DietaImp {
         return respuesta;
     }
 
+    public static List<Dieta> obtenerTodas() {
+        try {
+            RespuestaHTTP http = ConexionAPI.peticionGET(Constantes.URL_WS + "dieta/obtener-todas");
+            if (http.getCodigo() == 200) {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<ArrayList<Dieta>>(){}.getType();
+                return gson.fromJson(http.getContenido(), listType);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<>();
+    }
+
     public static DietaDetalle obtenerDetalle(int idDieta) {
         try {
             RespuestaHTTP http = ConexionAPI.peticionGET(Constantes.URL_WS + "dieta/" + idDieta);
