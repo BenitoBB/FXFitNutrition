@@ -12,19 +12,24 @@
    <children>
       <Pane layoutX="390.0" layoutY="160.0" prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: #fbfbfb; -fx-border-color: #e5e5e5; -fx-border-radius: 5px;">
          <children>
-            <TextField layoutX="67.0" layoutY="156.0" prefHeight="42.0" prefWidth="366.0" />
-            <Label layoutX="68.0" layoutY="137.0" styleClass="label-sm" text="Correo" />
-            <PasswordField layoutX="67.0" layoutY="237.0" prefHeight="42.0" prefWidth="366.0" />
-            <Label layoutX="68.0" layoutY="216.0" styleClass="label-sm" text="Contraseña" />
-            <Button layoutX="68.0" layoutY="308.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="366.0" styleClass="button-primary" text="Iniciar Sesión" />
-            <Label layoutX="157.0" layoutY="86.0" styleClass="label-base" text="Ingresa tu correo y contraseña" textFill="#757474">
+            <Label layoutX="157.0" layoutY="30.0" prefHeight="30.0" prefWidth="200.0" styleClass="label-title" text="FIT NUTRITION" alignment="CENTER">
+               <font>
+                  <Font name="Segoe UI Bold" size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="134.0" layoutY="65.0" styleClass="label-base" text="Ingresa tu número de personal y contraseña" textFill="#757474">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="179.0" layoutY="54.0" prefHeight="24.0" prefWidth="127.0" styleClass="label-title" text="Inicia sesión">
+            <Label layoutX="68.0" layoutY="117.0" styleClass="label-sm" text="Número de Personal" />
+            <TextField fx:id="tfNoPersonal" layoutX="67.0" layoutY="136.0" prefHeight="42.0" prefWidth="366.0" promptText="Ej: ADMIN001" />
+            <Label layoutX="68.0" layoutY="196.0" styleClass="label-sm" text="Contraseña" />
+            <PasswordField fx:id="pfContrasena" layoutX="67.0" layoutY="217.0" prefHeight="42.0" prefWidth="366.0" promptText="Ingresa tu contraseña" />
+            <Button fx:id="btnIniciarSesion" layoutX="68.0" layoutY="290.0" mnemonicParsing="false" onAction="#clicIniciarSesion" prefHeight="38.0" prefWidth="366.0" styleClass="button-primary" text="Iniciar Sesión" />
+            <Label fx:id="lbMensajeError" layoutX="68.0" layoutY="340.0" prefWidth="366.0" textFill="RED" alignment="CENTER" visible="false">
                <font>
-                  <Font name="Segoe UI Bold" size="20.0" />
+                  <Font size="11.0" />
                </font>
             </Label>
          </children>
