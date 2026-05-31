@@ -1,11 +1,9 @@
-package fxmlfitnutrition.vistas.cita;
+package fxmlfitnutrition.vistas.dieta;
 
-import dominio.CitaImp;
+import dominio.DietaImp;
+import dto.RespuestaSimple;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,116 +18,123 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import pojo.Cita;
-import pojo.CitaDetalle;
+import pojo.AlimentoEnDieta;
+import pojo.CategoriaConAlimentos;
+import pojo.Dieta;
+import pojo.DietaDetalle;
 import utilidad.NotificacionOperacion;
-import utilidad.Sesion;
 import utilidad.Utilidades;
 
-public class FXMLCitasController implements Initializable, NotificacionOperacion {
+public class FXMLDietasController implements Initializable, NotificacionOperacion {
 
-    @FXML private TextField tfBuscar;
-    @FXML private ComboBox<String> cbFiltroEstatus;
-    @FXML private TableView<CitaDetalle> tvCitas;
-    @FXML private TableColumn<CitaDetalle, String> colFecha;
-    @FXML private TableColumn<CitaDetalle, String> colHora;
-    @FXML private TableColumn<CitaDetalle, String> colPaciente;
-    @FXML private TableColumn<CitaDetalle, String> colMedico;
-    @FXML private TableColumn<CitaDetalle, String> colEstatus;
-    @FXML private Button btnAgendar;
-    @FXML private Button btnModificar;
-    @FXML private Button btnCancelar;
-    @FXML private Button btnReagendar;
+    @FXML private Button btnCrear;
+    @FXML private Button btnEditar;
+    @FXML private Button btnEliminar;
+    @FXML private TableView<Dieta> tvDietas;
+    @FXML private TableColumn<Dieta, String> colNombreDieta;
+    @FXML private TableColumn<Dieta, Double> colTotalCalorias;
+    @FXML private TableColumn<Dieta, String> colEditable;
+    @FXML private TreeView<String> tvDetalleDieta;
 
-    private ObservableList<CitaDetalle> listaObservableCitas;
+    private ObservableList<Dieta> dietas;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
-        configurarFiltroEstatus();
-        Utilidades.permitirBusquedaNombreCorreo(tfBuscar);
-        cargarDatosTabla();
-
-        tfBuscar.textProperty().addListener((observable, oldValue, newValue) -> cargarDatosTabla());
-        cbFiltroEstatus.valueProperty().addListener((observable, oldValue, newValue) -> cargarDatosTabla());
-        tvCitas.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> actualizarEstadoAcciones()
-        );
-        actualizarEstadoAcciones();
+        btnEditar.setDisable(true);
+        btnEliminar.setDisable(true);
+        cargarDietas();
     }
 
     private void configurarTabla() {
-        colFecha.setCellValueFactory(new PropertyValueFactory<>("fechaCita"));
-        colHora.setCellValueFactory(new PropertyValueFactory<>("horaCita"));
-        colPaciente.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getNombrePacienteCompleto())
-        );
-        colMedico.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getNombreMedicoCompleto())
-        );
-        colEstatus.setCellValueFactory(new PropertyValueFactory<>("estatus"));
+        colNombreDieta.setCellValueFactory(new PropertyValueFactory<>("nombreDieta"));
+        colTotalCalorias.setCellValueFactory(new PropertyValueFactory<>("totalCalorias"));
+        colEditable.setCellValueFactory(cellData -> new SimpleStringProperty(
+                cellData.getValue().getEditable() == 1 ? "Editable" : "Bloqueada"
+        ));
 
-        listaObservableCitas = FXCollections.observableArrayList();
-        tvCitas.setItems(listaObservableCitas);
+        dietas = FXCollections.observableArrayList();
+        tvDietas.setItems(dietas);
+        tvDietas.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            boolean sinSeleccion = newValue == null;
+            btnEditar.setDisable(sinSeleccion || newValue.getEditable() == 0);
+            btnEliminar.setDisable(sinSeleccion);
+            cargarDetalle(newValue);
+        });
     }
 
-    private void configurarFiltroEstatus() {
-        cbFiltroEstatus.getItems().addAll("Todos", "Confirmada", "Reagendada", "Cancelada", "Asistida", "Ausente");
-        cbFiltroEstatus.getSelectionModel().selectFirst();
-    }
-
-    private void cargarDatosTabla() {
-        String criterio = tfBuscar.getText();
-        String estatus = cbFiltroEstatus.getValue();
-
-        List<CitaDetalle> citas = CitaImp.buscarCitas(
-                criterio,
-                Sesion.getIdMedicoParaFiltro(),
-                Sesion.isEsAdministrador(),
-                estatus
-        );
-        listaObservableCitas.clear();
-        if (citas != null) {
-            listaObservableCitas.addAll(citas);
-        } else {
-            Utilidades.mostrarAlertaSimple(
-                    "Error",
-                    "No fue posible consultar las citas.",
-                    Alert.AlertType.ERROR
-            );
-        }
-        actualizarEstadoAcciones();
+    private void cargarDietas() {
+        dietas.clear();
+        dietas.addAll(DietaImp.obtenerTodas());
     }
 
     @FXML
-    private void clicAgendarCita(ActionEvent event) {
+    private void clicNuevaDieta(ActionEvent event) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLFormularioCita.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLFormularioDieta.fxml"));
             Parent root = fxmlLoader.load();
 
-            FXMLFormularioCitaController controlador = fxmlLoader.getController();
+            FXMLFormularioDietaController controlador = fxmlLoader.getController();
             controlador.inicializarValores(this);
 
             Stage stage = new Stage();
-            stage.setTitle("Agendar Nueva Cita");
+            stage.setTitle("Nueva Dieta");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo cargar la ventana de agenda.", Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo cargar el formulario de dieta.", Alert.AlertType.ERROR);
         }
+    }
+
+    @FXML
+    private void clicEditar(ActionEvent event) {
+        Dieta dietaSeleccionada = tvDietas.getSelectionModel().getSelectedItem();
+        if (dietaSeleccionada == null) {
+            Utilidades.mostrarAlertaSimple("Atencion", "Selecciona una dieta.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (dietaSeleccionada.getEditable() == 0) {
+            Utilidades.mostrarAlertaSimple("Dieta Bloqueada", "La dieta esta asignada a mas de un paciente y no puede editarse.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        DietaDetalle detalle = DietaImp.obtenerDetalle(dietaSeleccionada.getIdDieta());
+        if (detalle == null) {
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo obtener el detalle de la dieta.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLFormularioDieta.fxml"));
+            Parent root = fxmlLoader.load();
+
+            FXMLFormularioDietaController controlador = fxmlLoader.getController();
+            controlador.inicializarValores(this);
+            controlador.inicializarParaEdicion(detalle);
+
+            Stage stage = new Stage();
+            stage.setTitle("Modificar Dieta");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo cargar el formulario de dieta.", Alert.AlertType.ERROR);
+        }
+    }
+
+    @Override
+    public void notificarOperacionGuardar() {
+        cargarDietas();
     }
 }
