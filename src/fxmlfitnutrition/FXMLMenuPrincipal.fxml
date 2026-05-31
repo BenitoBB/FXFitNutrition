@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@css/light-modern.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.FXMLMenuPrincipalController">
+   <left>
+      <VBox prefHeight="660.0" prefWidth="250.0" style="-fx-background-color: #2c3e50;" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="80.0" prefWidth="250.0">
+               <children>
+                  <Label layoutX="45.0" layoutY="26.0" text="FIT NUTRITION" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Button fx:id="btnPacientes" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#clicPacientes" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-padding: 0 0 0 40;" text="Pacientes">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnCitas" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#clicCitas" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-padding: 0 0 0 40;" text="Citas">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnConsultas" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#clicConsultas" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-padding: 0 0 0 40;" text="Consultas">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnDietas" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#clicDietas" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-padding: 0 0 0 40;" text="Dietas">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnAlimentos" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#clicAlimentos" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-padding: 0 0 0 40;" text="Alimentos">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnMedicos" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#clicMedicos" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-padding: 0 0 0 40;" text="Médicos">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </VBox>
+   </left>
+   <top>
+      <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="1280.0" style="-fx-background-color: white; -fx-border-color: #e5e5e5; -fx-border-width: 0 0 1 0;" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="300.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="lbNombreUsuario" text="Nombre Usuario">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets right="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="lbRol" text="Rol" textFill="#757575">
+                     <VBox.margin>
+                        <Insets right="20.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Button fx:id="btnCerrarSesion" mnemonicParsing="false" onAction="#clicCerrarSesion" styleClass="button-danger" text="Cerrar Sesión">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <AnchorPane fx:id="apCentral" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f4f6f9;" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="336.0" layoutY="299.0" text="Bienvenido al sistema FitNutrition" textFill="#a4a4a4">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
