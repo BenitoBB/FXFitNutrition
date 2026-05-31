@@ -1,306 +1,97 @@
 package fxmlfitnutrition.vistas.cita;
 
 import dominio.CitaImp;
-import java.io.IOException;
+import dominio.MedicoImp;
+import dominio.PacienteImp;
+import dto.RSPacientes;
+import dto.RespuestaSimple;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import pojo.Cita;
 import pojo.CitaDetalle;
+import pojo.Medico;
+import pojo.Paciente;
 import utilidad.NotificacionOperacion;
 import utilidad.Sesion;
 import utilidad.Utilidades;
 
-public class FXMLCitasController implements Initializable, NotificacionOperacion {
+public class FXMLFormularioCitaController implements Initializable {
 
-    @FXML private TextField tfBuscar;
-    @FXML private ComboBox<String> cbFiltroEstatus;
-    @FXML private TableView<CitaDetalle> tvCitas;
-    @FXML private TableColumn<CitaDetalle, String> colFecha;
-    @FXML private TableColumn<CitaDetalle, String> colHora;
-    @FXML private TableColumn<CitaDetalle, String> colPaciente;
-    @FXML private TableColumn<CitaDetalle, String> colMedico;
-    @FXML private TableColumn<CitaDetalle, String> colEstatus;
-    @FXML private Button btnAgendar;
-    @FXML private Button btnModificar;
+    @FXML private Label lbTitulo;
+    @FXML private ComboBox<Paciente> cbPaciente;
+    @FXML private VBox vbMedico;
+    @FXML private ComboBox<Medico> cbMedico;
+    @FXML private DatePicker dpFechaCita;
+    @FXML private ComboBox<String> cbHora;
+    @FXML private VBox vbEstatus;
+    @FXML private ComboBox<String> cbEstatus;
+    @FXML private TextArea taObservaciones;
+    @FXML private Label lbMensajeError;
     @FXML private Button btnCancelar;
-    @FXML private Button btnReagendar;
+    @FXML private Button btnAgendar;
 
-    private ObservableList<CitaDetalle> listaObservableCitas;
+    private NotificacionOperacion observador;
+    private CitaDetalle citaEdicion;
+    private boolean modoEdicion;
+
+    public void inicializarValores(NotificacionOperacion observador) {
+        this.observador = observador;
+    }
+
+    public void inicializarParaEdicion(CitaDetalle cita) {
+        this.citaEdicion = cita;
+        this.modoEdicion = true;
+
+        lbTitulo.setText("Modificar Cita");
+        btnAgendar.setText("Guardar");
+        cbPaciente.setDisable(true);
+        cbMedico.setDisable(true);
+        dpFechaCita.setDisable(true);
+        cbHora.setDisable(true);
+        vbEstatus.setVisible(true);
+        vbEstatus.setManaged(true);
+
+        precargarDatosCita();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        configurarTabla();
-        configurarFiltroEstatus();
-        Utilidades.permitirBusquedaNombreCorreo(tfBuscar);
-        cargarDatosTabla();
-
-        tfBuscar.textProperty().addListener((observable, oldValue, newValue) -> cargarDatosTabla());
-        cbFiltroEstatus.valueProperty().addListener((observable, oldValue, newValue) -> cargarDatosTabla());
-        tvCitas.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> actualizarEstadoAcciones()
-        );
-        actualizarEstadoAcciones();
+        cargarPacientes();
+        cargarHoras();
+        cargarEstatusEditables();
+        configurarSegunRol();
+        Utilidades.permitirLetrasNumeros(taObservaciones);
     }
 
-    private void configurarTabla() {
-        colFecha.setCellValueFactory(new PropertyValueFactory<>("fechaCita"));
-        colHora.setCellValueFactory(new PropertyValueFactory<>("horaCita"));
-        colPaciente.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getNombrePacienteCompleto())
-        );
-        colMedico.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getNombreMedicoCompleto())
-        );
-        colEstatus.setCellValueFactory(new PropertyValueFactory<>("estatus"));
-
-        listaObservableCitas = FXCollections.observableArrayList();
-        tvCitas.setItems(listaObservableCitas);
-    }
-
-    private void configurarFiltroEstatus() {
-        cbFiltroEstatus.getItems().addAll("Todos", "Confirmada", "Reagendada", "Cancelada", "Asistida", "Ausente");
-        cbFiltroEstatus.getSelectionModel().selectFirst();
-    }
-
-    private void cargarDatosTabla() {
-        String criterio = tfBuscar.getText();
-        String estatus = cbFiltroEstatus.getValue();
-
-        List<CitaDetalle> citas = CitaImp.buscarCitas(
-                criterio,
+    private void cargarPacientes() {
+        RSPacientes respuesta = PacienteImp.buscarPacientes(
+                "",
                 Sesion.getIdMedicoParaFiltro(),
-                Sesion.isEsAdministrador(),
-                estatus
+                Sesion.isEsAdministrador()
         );
-        listaObservableCitas.clear();
-        if (citas != null) {
-            listaObservableCitas.addAll(citas);
-        } else {
-            Utilidades.mostrarAlertaSimple(
-                    "Error",
-                    "No fue posible consultar las citas.",
-                    Alert.AlertType.ERROR
-            );
-        }
-        actualizarEstadoAcciones();
-    }
-
-    @FXML
-    private void clicAgendarCita(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLFormularioCita.fxml"));
-            Parent root = fxmlLoader.load();
-
-            FXMLFormularioCitaController controlador = fxmlLoader.getController();
-            controlador.inicializarValores(this);
-
-            Stage stage = new Stage();
-            stage.setTitle("Agendar Nueva Cita");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo cargar la ventana de agenda.", Alert.AlertType.ERROR);
+        if (!respuesta.isError() && respuesta.getPacientes() != null) {
+            ObservableList<Paciente> pacientes = FXCollections.observableArrayList(respuesta.getPacientes());
+            cbPaciente.setItems(pacientes);
         }
     }
 
-    @FXML
-    private void clicModificar(ActionEvent event) {
-        CitaDetalle citaSeleccionada = tvCitas.getSelectionModel().getSelectedItem();
-        if (citaSeleccionada == null) {
-            Utilidades.mostrarAlertaSimple("Atencion", "Por favor selecciona una cita de la tabla.", Alert.AlertType.WARNING);
-            return;
-        }
-
-        if (!esCitaModificable(citaSeleccionada)) {
-            Utilidades.mostrarAlertaSimple(
-                    "Atencion",
-                    "Solo se pueden modificar citas con estatus Confirmada o Reagendada.",
-                    Alert.AlertType.WARNING
-            );
-            return;
-        }
-
-        abrirFormularioEdicion(citaSeleccionada);
-    }
-
-    @FXML
-    private void clicCancelar(ActionEvent event) {
-        CitaDetalle citaSeleccionada = tvCitas.getSelectionModel().getSelectedItem();
-        if (citaSeleccionada == null) {
-            Utilidades.mostrarAlertaSimple("Atencion", "Por favor selecciona una cita de la tabla.", Alert.AlertType.WARNING);
-            return;
-        }
-
-        if (!esCitaModificable(citaSeleccionada)) {
-            Utilidades.mostrarAlertaSimple(
-                    "Atencion",
-                    "Solo se pueden cancelar citas con estatus Confirmada o Reagendada.",
-                    Alert.AlertType.WARNING
-            );
-            return;
-        }
-
-        if (!confirmarCancelacion(citaSeleccionada)) {
-            return;
-        }
-
-        Optional<String> motivo = solicitarMotivoCancelacion();
-        if (!motivo.isPresent()) {
-            return;
-        }
-
-        cancelarCita(citaSeleccionada, motivo.get());
-    }
-
-    @FXML
-    private void clicReagendar(ActionEvent event) {
-        CitaDetalle citaSeleccionada = tvCitas.getSelectionModel().getSelectedItem();
-        if (citaSeleccionada == null) {
-            Utilidades.mostrarAlertaSimple("Atencion", "Por favor selecciona una cita de la tabla.", Alert.AlertType.WARNING);
-            return;
-        }
-
-        if (!esCitaReagendable(citaSeleccionada)) {
-            Utilidades.mostrarAlertaSimple(
-                    "Atencion",
-                    "Solo se pueden reagendar citas con estatus Cancelada.",
-                    Alert.AlertType.WARNING
-            );
-            return;
-        }
-
-        abrirModalReagendar(citaSeleccionada);
-    }
-
-    private boolean esCitaModificable(CitaDetalle cita) {
-        return cita != null
-                && ("Confirmada".equals(cita.getEstatus()) || "Reagendada".equals(cita.getEstatus()));
-    }
-
-    private boolean esCitaReagendable(CitaDetalle cita) {
-        return cita != null && "Cancelada".equals(cita.getEstatus());
-    }
-
-    private void actualizarEstadoAcciones() {
-        CitaDetalle citaSeleccionada = tvCitas.getSelectionModel().getSelectedItem();
-        boolean accionPermitida = esCitaModificable(citaSeleccionada);
-        btnModificar.setDisable(!accionPermitida);
-        btnCancelar.setDisable(!accionPermitida);
-        btnReagendar.setDisable(!esCitaReagendable(citaSeleccionada));
-    }
-
-    private boolean confirmarCancelacion(CitaDetalle cita) {
-        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
-        alerta.setTitle("Cancelar Cita");
-        alerta.setHeaderText("Confirmar cancelacion");
-        alerta.setContentText("Se cancelara la cita de " + cita.getNombrePacienteCompleto()
-                + " del " + cita.getFechaCita() + " a las " + formatearHoraVista(cita.getHoraCita()) + ".");
-
-        Optional<ButtonType> respuesta = alerta.showAndWait();
-        return respuesta.isPresent() && respuesta.get() == ButtonType.OK;
-    }
-
-    private Optional<String> solicitarMotivoCancelacion() {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Motivo de Cancelacion");
-        dialog.setHeaderText("Motivo opcional");
-        dialog.setContentText("Motivo:");
-        return dialog.showAndWait();
-    }
-
-    private void cancelarCita(CitaDetalle citaSeleccionada, String motivoCancelacion) {
-        Cita cita = new Cita();
-        cita.setIdCita(citaSeleccionada.getIdCita());
-        cita.setMotivoCancelacion(motivoCancelacion != null ? motivoCancelacion.trim() : "");
-
-        dto.RespuestaSimple respuesta = CitaImp.cancelarCita(cita);
-        if (!respuesta.isError()) {
-            citaSeleccionada.setEstatus("Cancelada");
-            citaSeleccionada.setMotivoCancelacion(cita.getMotivoCancelacion());
-            tvCitas.refresh();
-            actualizarEstadoAcciones();
-            Utilidades.mostrarAlertaSimple("Cita Cancelada", "La cita se ha cancelado correctamente.", Alert.AlertType.INFORMATION);
-        } else {
-            Utilidades.mostrarAlertaSimple("Error", respuesta.getMensaje(), Alert.AlertType.ERROR);
-        }
-    }
-
-    private String formatearHoraVista(String hora) {
-        if (hora == null) {
-            return "";
-        }
-        return hora.length() >= 5 ? hora.substring(0, 5) : hora;
-    }
-
-    private void abrirModalReagendar(CitaDetalle citaSeleccionada) {
-        Stage stage = new Stage();
-        stage.setTitle("Reagendar Cita");
-        stage.initModality(Modality.APPLICATION_MODAL);
-
-        DatePicker dpNuevaFecha = new DatePicker();
-        ComboBox<String> cbNuevaHora = new ComboBox<>();
-        cbNuevaHora.getItems().addAll(generarHorasDisponibles());
-
-        GridPane formulario = new GridPane();
-        formulario.setHgap(15);
-        formulario.setVgap(15);
-        formulario.setStyle("-fx-padding: 20;");
-        formulario.add(new Label("Nueva fecha *"), 0, 0);
-        formulario.add(dpNuevaFecha, 1, 0);
-        formulario.add(new Label("Nueva hora *"), 0, 1);
-        formulario.add(cbNuevaHora, 1, 1);
-
-        Button btnGuardar = new Button("Guardar");
-        btnGuardar.getStyleClass().add("button-primary");
-        Button btnCerrar = new Button("Cancelar");
-
-        HBox acciones = new HBox(12, btnCerrar, btnGuardar);
-        acciones.setStyle("-fx-alignment: center-right; -fx-padding: 0 20 20 20;");
-
-        javafx.scene.layout.VBox contenedor = new javafx.scene.layout.VBox(10, formulario, acciones);
-        URL hojaEstilos = getClass().getResource("/fxmlfitnutrition/css/light-modern.css");
-        if (hojaEstilos != null) {
-            contenedor.getStylesheets().add(hojaEstilos.toExternalForm());
-        }
-
-        btnCerrar.setOnAction(event -> stage.close());
-        btnGuardar.setOnAction(event -> guardarReagenda(citaSeleccionada, dpNuevaFecha, cbNuevaHora, stage));
-
-        stage.setScene(new Scene(contenedor, 430, 190));
-        stage.showAndWait();
-    }
-
-    private ObservableList<String> generarHorasDisponibles() {
+    private void cargarHoras() {
         ObservableList<String> horas = FXCollections.observableArrayList();
         for (int h = 7; h <= 20; h++) {
             horas.add(String.format("%02d:00", h));
@@ -309,67 +100,233 @@ public class FXMLCitasController implements Initializable, NotificacionOperacion
             }
         }
         horas.add("20:30");
-        return horas;
+        cbHora.setItems(horas);
     }
 
-    private void guardarReagenda(CitaDetalle citaSeleccionada, DatePicker dpNuevaFecha, ComboBox<String> cbNuevaHora, Stage stage) {
-        if (dpNuevaFecha.getValue() == null || cbNuevaHora.getValue() == null) {
-            Utilidades.mostrarAlertaSimple("Validacion", "Selecciona la nueva fecha y hora.", Alert.AlertType.WARNING);
+    private void configurarSegunRol() {
+        if (Sesion.isEsAdministrador()) {
+            List<Medico> medicos = MedicoImp.buscarMedicos("", true);
+            if (medicos != null) {
+                cbMedico.setItems(FXCollections.observableArrayList(medicos));
+            }
+        } else {
+            vbMedico.setVisible(false);
+            vbMedico.setManaged(false);
+        }
+    }
+
+    private void cargarEstatusEditables() {
+        cbEstatus.setItems(FXCollections.observableArrayList("Confirmada", "Reagendada", "Asistida"));
+    }
+
+    @FXML
+    private void clicAgendar(ActionEvent event) {
+        lbMensajeError.setVisible(false);
+
+        if (modoEdicion && !esCitaEditable(citaEdicion)) {
+            mostrarAlertaValidacion("Solo se pueden modificar citas Confirmadas o Reagendadas.");
             return;
         }
 
-        if (dpNuevaFecha.getValue().isBefore(LocalDate.now().plusDays(1))) {
-            Utilidades.mostrarAlertaSimple("Validacion", "La cita debe programarse con al menos 1 dia de antelacion.", Alert.AlertType.WARNING);
+        if (cbPaciente.getValue() == null || (!modoEdicion && (dpFechaCita.getValue() == null || cbHora.getValue() == null))) {
+            mostrarAlertaValidacion("Por favor completa los campos obligatorios (*).");
             return;
         }
 
-        if (!generarHorasDisponibles().contains(cbNuevaHora.getValue())) {
-            Utilidades.mostrarAlertaSimple("Validacion", "Selecciona un horario valido entre 07:00 y 20:30 en bloques de 30 minutos.", Alert.AlertType.WARNING);
+        if (modoEdicion && cbEstatus.getValue() == null) {
+            mostrarAlertaValidacion("Por favor selecciona el estatus de la cita.");
             return;
         }
 
-        Cita cita = new Cita();
-        cita.setIdCita(citaSeleccionada.getIdCita());
-        cita.setFechaCita(dpNuevaFecha.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        cita.setHoraCita(cbNuevaHora.getValue() + ":00");
+        if (!modoEdicion && Sesion.isEsAdministrador() && cbMedico.getValue() == null) {
+            mostrarAlertaValidacion("Por favor selecciona un medico.");
+            return;
+        }
 
-        dto.RespuestaSimple respuesta = CitaImp.reagendarCita(cita);
+        if (!modoEdicion) {
+            LocalDate manana = LocalDate.now().plusDays(1);
+            if (dpFechaCita.getValue().isBefore(manana)) {
+                mostrarAlertaValidacion("La cita debe programarse con al menos 1 dia de antelacion.");
+                return;
+            }
+
+            if (!esHoraValida(cbHora.getValue())) {
+                mostrarAlertaValidacion("Selecciona un horario valido entre 07:00 y 20:30 en bloques de 30 minutos.");
+                return;
+            }
+        }
+
+        Cita cita = construirCitaFormulario();
+        if (modoEdicion && !hayCambiosEnEdicion(cita)) {
+            return;
+        }
+
+        RespuestaSimple respuesta = modoEdicion
+                ? CitaImp.modificarCita(cita)
+                : CitaImp.crearCita(cita);
+
         if (!respuesta.isError()) {
-            citaSeleccionada.setFechaCita(cita.getFechaCita());
-            citaSeleccionada.setHoraCita(cita.getHoraCita());
-            citaSeleccionada.setEstatus("Reagendada");
-            citaSeleccionada.setMotivoCancelacion(null);
-            tvCitas.refresh();
-            actualizarEstadoAcciones();
-            stage.close();
-            Utilidades.mostrarAlertaSimple("Cita Reagendada", "La cita se ha reagendado correctamente.", Alert.AlertType.INFORMATION);
+            String titulo = modoEdicion ? "Cita Modificada" : "Cita Agendada";
+            String mensaje = modoEdicion ? "La cita se ha modificado exitosamente." : "La cita se ha programado exitosamente.";
+            Utilidades.mostrarAlertaSimple(titulo, mensaje, Alert.AlertType.INFORMATION);
+            if (observador != null) {
+                observador.notificarOperacionGuardar();
+            }
+            cerrarVentana();
         } else {
             Utilidades.mostrarAlertaSimple("Error", respuesta.getMensaje(), Alert.AlertType.ERROR);
         }
     }
 
-    private void abrirFormularioEdicion(CitaDetalle cita) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLFormularioCita.fxml"));
-            Parent root = fxmlLoader.load();
+    @FXML
+    private void clicCancelar(ActionEvent event) {
+        cerrarVentana();
+    }
 
-            FXMLFormularioCitaController controlador = fxmlLoader.getController();
-            controlador.inicializarValores(this);
-            controlador.inicializarParaEdicion(cita);
+    private Cita construirCitaFormulario() {
+        Cita cita = new Cita();
+        if (modoEdicion) {
+            cita.setIdCita(citaEdicion.getIdCita());
+        }
 
-            Stage stage = new Stage();
-            stage.setTitle("Modificar Cita");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo cargar la ventana de modificacion.", Alert.AlertType.ERROR);
+        cita.setIdPaciente(cbPaciente.getValue().getIdPaciente());
+        if (!modoEdicion) {
+            cita.setFechaCita(dpFechaCita.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            cita.setHoraCita(normalizarHoraParaApi(cbHora.getValue()));
+        }
+        cita.setObservaciones(taObservaciones.getText() != null ? taObservaciones.getText().trim() : "");
+        if (modoEdicion) {
+            cita.setEstatus(cbEstatus.getValue());
+        }
+
+        if (modoEdicion) {
+            cita.setIdMedico(citaEdicion.getIdMedico());
+        } else if (Sesion.isEsAdministrador()) {
+            cita.setIdMedico(cbMedico.getValue().getIdMedico());
+        } else {
+            cita.setIdMedico(Sesion.getMedicoSesion().getIdMedico());
+        }
+
+        return cita;
+    }
+
+    private void precargarDatosCita() {
+        if (citaEdicion == null) {
+            return;
+        }
+
+        seleccionarPacienteCita();
+        seleccionarMedicoCita();
+
+        if (citaEdicion.getFechaCita() != null && !citaEdicion.getFechaCita().trim().isEmpty()) {
+            dpFechaCita.setValue(LocalDate.parse(citaEdicion.getFechaCita()));
+        }
+
+        cbHora.setValue(formatearHoraVista(citaEdicion.getHoraCita()));
+        configurarEstatusParaCitaActual();
+        cbEstatus.setValue(citaEdicion.getEstatus());
+        taObservaciones.setText(citaEdicion.getObservaciones() != null ? citaEdicion.getObservaciones() : "");
+    }
+
+    private void configurarEstatusParaCitaActual() {
+        if ("Reagendada".equals(citaEdicion.getEstatus())) {
+            cbEstatus.setItems(FXCollections.observableArrayList("Reagendada", "Confirmada", "Asistida"));
+        } else {
+            cbEstatus.setItems(FXCollections.observableArrayList("Confirmada", "Asistida"));
         }
     }
 
-    @Override
-    public void notificarOperacionGuardar() {
-        cargarDatosTabla();
+    private void seleccionarPacienteCita() {
+        Paciente paciente = buscarPacientePorId(citaEdicion.getIdPaciente());
+        if (paciente == null) {
+            paciente = new Paciente();
+            paciente.setIdPaciente(citaEdicion.getIdPaciente());
+            paciente.setNombre(citaEdicion.getPacienteNombre());
+            paciente.setPrimerApellido(citaEdicion.getPacientePrimerApellido());
+            paciente.setSegundoApellido(citaEdicion.getPacienteSegundoApellido());
+            cbPaciente.getItems().add(paciente);
+        }
+        cbPaciente.setValue(paciente);
+    }
+
+    private void seleccionarMedicoCita() {
+        if (!Sesion.isEsAdministrador()) {
+            return;
+        }
+
+        Medico medico = buscarMedicoPorId(citaEdicion.getIdMedico());
+        if (medico == null) {
+            medico = new Medico();
+            medico.setIdMedico(citaEdicion.getIdMedico());
+            medico.setNombre(citaEdicion.getMedicoNombre());
+            medico.setPrimerApellido(citaEdicion.getMedicoPrimerApellido());
+            medico.setSegundoApellido(citaEdicion.getMedicoSegundoApellido());
+            cbMedico.getItems().add(medico);
+        }
+        cbMedico.setValue(medico);
+    }
+
+    private Paciente buscarPacientePorId(int idPaciente) {
+        for (Paciente paciente : cbPaciente.getItems()) {
+            if (paciente.getIdPaciente() == idPaciente) {
+                return paciente;
+            }
+        }
+        return null;
+    }
+
+    private Medico buscarMedicoPorId(int idMedico) {
+        for (Medico medico : cbMedico.getItems()) {
+            if (medico.getIdMedico() == idMedico) {
+                return medico;
+            }
+        }
+        return null;
+    }
+
+    private boolean esCitaEditable(CitaDetalle cita) {
+        return cita != null
+                && ("Confirmada".equals(cita.getEstatus()) || "Reagendada".equals(cita.getEstatus()));
+    }
+
+    private boolean esHoraValida(String hora) {
+        return cbHora.getItems().contains(formatearHoraVista(hora));
+    }
+
+    private boolean hayCambiosEnEdicion(Cita cita) {
+        if (citaEdicion == null) {
+            return false;
+        }
+
+        String observacionesActuales = normalizarTexto(citaEdicion.getObservaciones());
+        String estatusActual = normalizarTexto(citaEdicion.getEstatus());
+
+        return !observacionesActuales.equals(normalizarTexto(cita.getObservaciones()))
+                || !estatusActual.equals(normalizarTexto(cita.getEstatus()));
+    }
+
+    private String formatearHoraVista(String hora) {
+        if (hora == null) {
+            return null;
+        }
+        return hora.length() >= 5 ? hora.substring(0, 5) : hora;
+    }
+
+    private String normalizarHoraParaApi(String hora) {
+        String horaVista = formatearHoraVista(hora);
+        return horaVista != null && horaVista.length() == 5 ? horaVista + ":00" : horaVista;
+    }
+
+    private String normalizarTexto(String texto) {
+        return texto != null ? texto.trim() : "";
+    }
+
+    private void mostrarAlertaValidacion(String mensaje) {
+        Utilidades.mostrarAlertaSimple("Validacion", mensaje, Alert.AlertType.WARNING);
+    }
+
+    private void cerrarVentana() {
+        Stage stage = (Stage) btnCancelar.getScene().getWindow();
+        stage.close();
     }
 }

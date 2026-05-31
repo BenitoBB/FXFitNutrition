@@ -90,6 +90,28 @@ public class FXMLCitasController implements Initializable, NotificacionOperacion
         cbFiltroEstatus.getSelectionModel().selectFirst();
     }
 
+    private void cargarDatosTabla() {
+        String criterio = tfBuscar.getText();
+        String estatus = cbFiltroEstatus.getValue();
+
+        List<CitaDetalle> citas = CitaImp.buscarCitas(
+                criterio,
+                Sesion.getIdMedicoParaFiltro(),
+                Sesion.isEsAdministrador(),
+                estatus
+        );
+        listaObservableCitas.clear();
+        if (citas != null) {
+            listaObservableCitas.addAll(citas);
+        } else {
+            Utilidades.mostrarAlertaSimple(
+                    "Error",
+                    "No fue posible consultar las citas.",
+                    Alert.AlertType.ERROR
+            );
+        }
+        actualizarEstadoAcciones();
+    }
 
     @FXML
     private void clicAgendarCita(ActionEvent event) {
@@ -131,6 +153,34 @@ public class FXMLCitasController implements Initializable, NotificacionOperacion
         abrirFormularioEdicion(citaSeleccionada);
     }
 
+    @FXML
+    private void clicCancelar(ActionEvent event) {
+        CitaDetalle citaSeleccionada = tvCitas.getSelectionModel().getSelectedItem();
+        if (citaSeleccionada == null) {
+            Utilidades.mostrarAlertaSimple("Atencion", "Por favor selecciona una cita de la tabla.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (!esCitaModificable(citaSeleccionada)) {
+            Utilidades.mostrarAlertaSimple(
+                    "Atencion",
+                    "Solo se pueden cancelar citas con estatus Confirmada o Reagendada.",
+                    Alert.AlertType.WARNING
+            );
+            return;
+        }
+
+        if (!confirmarCancelacion(citaSeleccionada)) {
+            return;
+        }
+
+        Optional<String> motivo = solicitarMotivoCancelacion();
+        if (!motivo.isPresent()) {
+            return;
+        }
+
+        cancelarCita(citaSeleccionada, motivo.get());
+    }
 
     @FXML
     private void clicReagendar(ActionEvent event) {
@@ -188,6 +238,22 @@ public class FXMLCitasController implements Initializable, NotificacionOperacion
         return dialog.showAndWait();
     }
 
+    private void cancelarCita(CitaDetalle citaSeleccionada, String motivoCancelacion) {
+        Cita cita = new Cita();
+        cita.setIdCita(citaSeleccionada.getIdCita());
+        cita.setMotivoCancelacion(motivoCancelacion != null ? motivoCancelacion.trim() : "");
+
+        dto.RespuestaSimple respuesta = CitaImp.cancelarCita(cita);
+        if (!respuesta.isError()) {
+            citaSeleccionada.setEstatus("Cancelada");
+            citaSeleccionada.setMotivoCancelacion(cita.getMotivoCancelacion());
+            tvCitas.refresh();
+            actualizarEstadoAcciones();
+            Utilidades.mostrarAlertaSimple("Cita Cancelada", "La cita se ha cancelado correctamente.", Alert.AlertType.INFORMATION);
+        } else {
+            Utilidades.mostrarAlertaSimple("Error", respuesta.getMensaje(), Alert.AlertType.ERROR);
+        }
+    }
 
     private String formatearHoraVista(String hora) {
         if (hora == null) {
