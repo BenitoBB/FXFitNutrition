@@ -91,41 +91,29 @@ public class FXMLMedicosController implements Initializable, NotificacionOperaci
     private void clicBaja(ActionEvent event) {
         Medico medicoSeleccionado = tvMedicos.getSelectionModel().getSelectedItem();
         if (medicoSeleccionado != null) {
-            boolean confirmar = Utilidades.mostrarAlertaConfirmacion(
-                "Confirmar Baja", 
-                "¿Estás seguro de dar de baja al médico " + medicoSeleccionado.getNombre() + "?"
-            );
+            List<Medico> medicosDisponibles = new ArrayList<>(listaMedicos);
+            medicosDisponibles.remove(medicoSeleccionado);
             
-            if (confirmar) {
-                List<Medico> medicosDisponibles = new ArrayList<>(listaMedicos);
-                medicosDisponibles.remove(medicoSeleccionado);
-                
-                if (medicosDisponibles.isEmpty()) {
-                    Utilidades.mostrarAlertaSimple("Error", "No hay otros médicos para reasignar a sus pacientes. Es necesario tener al menos otro médico activo.", Alert.AlertType.ERROR);
-                    return;
-                }
+            if (medicosDisponibles.isEmpty()) {
+                Utilidades.mostrarAlertaSimple("Error", "No hay otros médicos para reasignar a sus pacientes. Es necesario tener al menos otro médico activo.", Alert.AlertType.ERROR);
+                return;
+            }
 
-                ChoiceDialog<Medico> dialog = new ChoiceDialog<>(medicosDisponibles.get(0), medicosDisponibles);
-                dialog.setTitle("Reasignación de pacientes");
-                dialog.setHeaderText("El médico a dar de baja podría tener pacientes asignados.");
-                dialog.setContentText("Selecciona el médico al que se le reasignarán los pacientes:");
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLBajaMedico.fxml"));
+                Parent root = fxmlLoader.load();
                 
-                Optional<Medico> resultado = dialog.showAndWait();
-                if (resultado.isPresent()) {
-                    Medico medicoReasignacion = resultado.get();
-                    RQBajaMedico rq = new RQBajaMedico();
-                    rq.setIdMedicoBaja(medicoSeleccionado.getIdMedico());
-                    rq.setIdMedicoNuevo(medicoReasignacion.getIdMedico());
-                    rq.setEsAdministrador(1); 
+                FXMLBajaMedicoController controlador = fxmlLoader.getController();
+                controlador.inicializarValores(medicoSeleccionado, medicosDisponibles, this);
 
-                    Respuesta respuesta = MedicoImp.darDeBajaMedico(rq);
-                    if (!respuesta.isError()) {
-                        Utilidades.mostrarAlertaSimple("Éxito", respuesta.getMensaje(), Alert.AlertType.INFORMATION);
-                        cargarDatosTabla(tfBuscar.getText());
-                    } else {
-                        Utilidades.mostrarAlertaSimple("Error", respuesta.getMensaje(), Alert.AlertType.ERROR);
-                    }
-                }
+                Stage stage = new Stage();
+                stage.setTitle("Baja de Médico");
+                stage.setScene(new Scene(root));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir la ventana de baja.", Alert.AlertType.ERROR);
             }
         } else {
             Utilidades.mostrarAlertaSimple("Atención", "Por favor selecciona un médico de la tabla.", Alert.AlertType.WARNING);
