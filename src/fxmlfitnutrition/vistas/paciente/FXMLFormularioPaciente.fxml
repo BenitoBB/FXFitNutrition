@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane id="AnchorPane" prefHeight="744.0" prefWidth="600.0" stylesheets="@../../css/light-modern.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.vistas.paciente.FXMLFormularioPacienteController">
+<AnchorPane id="AnchorPane" prefHeight="744.0" prefWidth="600.0" stylesheets="/fxmlfitnutrition/css/light-modern.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.vistas.paciente.FXMLFormularioPacienteController">
    <children>
       <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
          <children>

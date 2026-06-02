@@ -7,19 +7,19 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.vistas.medico.FXMLBajaMedicoController">
+<AnchorPane id="AnchorPane" prefHeight="250.0" prefWidth="400.0" stylesheets="/fxmlfitnutrition/css/light-modern.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.vistas.medico.FXMLBajaMedicoController">
    <children>
       <VBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="20.0" spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
-            <Label text="Baja de Médico" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <Label text="Baja de Médico" styleClass="label-title"/>
             <Label fx:id="lbMedicoBaja" text="Médico a dar de baja: " />
             <Label fx:id="lbCantidadPacientes" text="Pacientes a reasignar: (Calculando...)" />
             <Label text="Seleccione el médico receptor:" />
             <ComboBox fx:id="cbMedicoReceptor" prefWidth="360.0" promptText="Seleccionar médico..." />
             <HBox alignment="CENTER_RIGHT" spacing="10.0">
                <children>
-                  <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#clicCancelar" text="Cancelar" />
-                  <Button fx:id="btnConfirmarBaja" mnemonicParsing="false" onAction="#clicConfirmarBaja" text="Confirmar Baja" style="-fx-background-color: #d9534f; -fx-text-fill: white;" />
+                  <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#clicCancelar" styleClass="button-cancel" text="Cancelar" />
+                  <Button fx:id="btnConfirmarBaja" mnemonicParsing="false" onAction="#clicConfirmarBaja" styleClass="button-delete" text="Confirmar Baja" />
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
