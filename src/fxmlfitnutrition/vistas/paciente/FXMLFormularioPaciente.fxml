@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -12,139 +11,113 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane id="AnchorPane" prefHeight="744.0" prefWidth="600.0" stylesheets="@css/light-modern.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.vistas.paciente.FXMLFormularioPacienteController">
+<AnchorPane id="AnchorPane" prefHeight="744.0" prefWidth="600.0" stylesheets="@../../css/light-modern.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.vistas.paciente.FXMLFormularioPacienteController">
    <children>
-      <Label fx:id="lbTitulo" layoutX="30.0" layoutY="20.0" styleClass="label-title" text="Registrar Nuevo Paciente">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label layoutX="30.0" layoutY="60.0" text="Datos Personales">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      
-      <GridPane hgap="15.0" layoutX="30.0" layoutY="90.0" prefHeight="245.0" prefWidth="545.0" vgap="10.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <Label fx:id="lbTitulo" styleClass="label-title" text="Registrar Nuevo Paciente">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label text="Datos Personales" styleClass="label-subtitle">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            
+            <GridPane hgap="15.0" vgap="10.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+              </columnConstraints>
                <children>
-                  <Label text="Nombre(s) *" />
-                  <TextField fx:id="tfNombre" />
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                     <Label text="Nombre(s) *" />
+                     <TextField fx:id="tfNombre" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                     <Label text="Primer Apellido *" />
+                     <TextField fx:id="tfPrimerApellido" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                     <Label text="Segundo Apellido" />
+                     <TextField fx:id="tfSegundoApellido" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <Label text="Fecha de Nacimiento *" />
+                     <DatePicker fx:id="dpFechaNacimiento" maxWidth="Infinity" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+                     <Label text="Sexo *" />
+                     <ComboBox fx:id="cbSexo" maxWidth="Infinity" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <Label text="Teléfono (10 dígitos) *" />
+                     <TextField fx:id="tfTelefono" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2">
+                     <Label text="Correo Electrónico *" />
+                     <TextField fx:id="tfCorreo" />
+                  </VBox>
                </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+            </GridPane>
+            
+            <Label text="Dirección" styleClass="label-subtitle">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+            
+            <GridPane hgap="15.0" vgap="10.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+              </columnConstraints>
                <children>
-                  <Label text="Primer Apellido *" />
-                  <TextField fx:id="tfPrimerApellido" />
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                     <Label text="Calle *" />
+                     <TextField fx:id="tfCalle" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                     <Label text="Número *" />
+                     <TextField fx:id="tfNumero" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                     <Label text="Código Postal *" />
+                     <TextField fx:id="tfCodigoPostal" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <Label text="Colonia *" />
+                     <ComboBox fx:id="cbColonia" maxWidth="Infinity" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+                     <Label text="Ciudad *" />
+                     <TextField fx:id="tfCiudad" editable="false" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <Label text="Estado" />
+                     <TextField fx:id="tfEstado" editable="false" />
+                  </VBox>
                </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+            </GridPane>
+            
+            <HBox alignment="CENTER_RIGHT" spacing="20.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Label text="Segundo Apellido" />
-                  <TextField fx:id="tfSegundoApellido" />
+                  <Label fx:id="lbMensajeError" textFill="RED" visible="false" />
+                  <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#clicCancelar" prefWidth="120.0" styleClass="button-cancel" text="Cancelar" />
+                  <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#clicGuardar" prefWidth="120.0" styleClass="button-save" text="Guardar" />
                </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <Label text="Fecha de Nacimiento *" />
-                  <DatePicker fx:id="dpFechaNacimiento" prefWidth="262.0" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
-               <children>
-                  <Label text="Sexo *" />
-                  <ComboBox fx:id="cbSexo" prefWidth="262.0" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <children>
-                  <Label text="Teléfono (10 dígitos) *" />
-                  <TextField fx:id="tfTelefono" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
-               <children>
-                  <Label text="Correo Electrónico *" />
-                  <TextField fx:id="tfCorreo" />
-               </children>
-            </VBox>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
          </children>
-      </GridPane>
-      
-      <Label layoutX="32.0" layoutY="378.0" text="Dirección">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Label>
-      
-      <GridPane hgap="15.0" layoutX="28.0" layoutY="407.0" prefHeight="225.0" prefWidth="545.0" vgap="10.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <Label text="Calle *" />
-                  <TextField fx:id="tfCalle" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-               <children>
-                  <Label text="Número *" />
-                  <TextField fx:id="tfNumero" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
-               <children>
-                  <Label text="Código Postal *" />
-                  <TextField fx:id="tfCodigoPostal" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <Label text="Colonia *" />
-                  <ComboBox fx:id="cbColonia" prefWidth="262.0" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
-               <children>
-                  <Label text="Ciudad *" />
-                  <TextField fx:id="tfCiudad" editable="false" />
-               </children>
-            </VBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <children>
-                  <Label text="Estado" />
-                  <TextField fx:id="tfEstado" editable="false" />
-               </children>
-            </VBox>
-         </children>
-      </GridPane>
-      
-      <HBox alignment="CENTER_RIGHT" layoutX="38.0" layoutY="677.0" prefHeight="40.0" prefWidth="540.0" spacing="20.0">
-         <children>
-            <Label fx:id="lbMensajeError" textFill="RED" visible="false" />
-            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#clicCancelar" prefWidth="120.0" text="Cancelar" />
-            <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#clicGuardar" prefWidth="120.0" styleClass="button-primary" text="Guardar" />
-         </children>
-      </HBox>
+      </VBox>
    </children>
 </AnchorPane>
