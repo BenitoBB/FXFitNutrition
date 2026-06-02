@@ -47,4 +47,9 @@ public class Domicilio {
 
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
+    
+    public String getDireccionCompleta() {
+        if (calle == null || calle.isEmpty()) return "Sin dirección";
+        return calle + " " + numero + ", " + (colonia != null ? colonia : "") + ", C.P. " + getCodigoPostal() + ", " + (ciudad != null ? ciudad : "") + ", " + (estado != null ? estado : "");
+    }
 }
