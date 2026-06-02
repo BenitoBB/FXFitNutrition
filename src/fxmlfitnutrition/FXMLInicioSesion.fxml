@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="mainFxmlClass" stylesheets="@css/light-modern.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.FXMLInicioSesionController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="mainFxmlClass" stylesheets="@css/light-modern.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.FXMLInicioSesionController">
    <children>
-      <Pane layoutX="390.0" layoutY="160.0" prefHeight="400.0" prefWidth="500.0" style="-fx-background-color: #fbfbfb; -fx-border-color: #e5e5e5; -fx-border-radius: 5px;">
+      <Pane layoutX="390.0" layoutY="58.0" prefHeight="585.0" prefWidth="500.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #e5e5e5; -fx-border-radius: 5px;">
          <children>
-            <Label layoutX="157.0" layoutY="30.0" prefHeight="30.0" prefWidth="200.0" styleClass="label-title" text="FIT NUTRITION" alignment="CENTER">
+            <Label alignment="CENTER" layoutX="157.0" layoutY="30.0" prefHeight="30.0" prefWidth="200.0" styleClass="label-title" text="FIT NUTRITION">
                <font>
                   <Font name="Segoe UI Bold" size="22.0" />
                </font>
@@ -22,16 +24,21 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label layoutX="68.0" layoutY="117.0" styleClass="label-sm" text="Número de Personal" />
-            <TextField fx:id="tfNoPersonal" layoutX="67.0" layoutY="136.0" prefHeight="42.0" prefWidth="366.0" promptText="Ej: ADMIN001" />
-            <Label layoutX="68.0" layoutY="196.0" styleClass="label-sm" text="Contraseña" />
-            <PasswordField fx:id="pfContrasena" layoutX="67.0" layoutY="217.0" prefHeight="42.0" prefWidth="366.0" promptText="Ingresa tu contraseña" />
-            <Button fx:id="btnIniciarSesion" layoutX="68.0" layoutY="290.0" mnemonicParsing="false" onAction="#clicIniciarSesion" prefHeight="38.0" prefWidth="366.0" styleClass="button-primary" text="Iniciar Sesión" />
-            <Label fx:id="lbMensajeError" layoutX="68.0" layoutY="340.0" prefWidth="366.0" textFill="RED" alignment="CENTER" visible="false">
+            <Label layoutX="68.0" layoutY="325.0" styleClass="label-sm" text="Número de Personal" />
+            <TextField fx:id="tfNoPersonal" layoutX="67.0" layoutY="344.0" prefHeight="42.0" prefWidth="366.0" promptText="Ej: ADMIN001" />
+            <Label layoutX="68.0" layoutY="404.0" styleClass="label-sm" text="Contraseña" />
+            <PasswordField fx:id="pfContrasena" layoutX="67.0" layoutY="425.0" prefHeight="42.0" prefWidth="366.0" promptText="Ingresa tu contraseña" />
+            <Button fx:id="btnIniciarSesion" layoutX="68.0" layoutY="498.0" mnemonicParsing="false" onAction="#clicIniciarSesion" prefHeight="38.0" prefWidth="366.0" styleClass="button-primary" text="Iniciar Sesión" />
+            <Label fx:id="lbMensajeError" alignment="CENTER" layoutX="68.0" layoutY="340.0" prefWidth="366.0" textFill="RED" visible="false">
                <font>
                   <Font size="11.0" />
                </font>
             </Label>
+            <ImageView fitHeight="296.0" fitWidth="305.0" layoutX="103.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/logo3.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
    </children>

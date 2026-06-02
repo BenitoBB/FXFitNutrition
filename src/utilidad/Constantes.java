@@ -3,7 +3,7 @@ package utilidad;
 
 
 public class Constantes {
-    public static final String URL_WS = "http://localhost:8080/PacketWorldAPI/webresources/";
+    public static final String URL_WS = "http://localhost:8080/api-rest-fitnutrition/api/";
     public static final int ERROR_MALFORMED_URL = 1001;
     public static final int ERROR_PETICION = 1002;
 

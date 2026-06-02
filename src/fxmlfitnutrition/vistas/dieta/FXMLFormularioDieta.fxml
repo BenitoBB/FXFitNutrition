@@ -66,8 +66,8 @@
                         <TextField fx:id="tfBuscarAlimento" prefHeight="36.0" prefWidth="190.0" promptText="Buscar alimento" />
                         <ComboBox fx:id="cbAlimento" prefHeight="36.0" prefWidth="230.0" promptText="Alimento" />
                         <Spinner fx:id="spCantidad" editable="true" prefHeight="36.0" prefWidth="95.0" />
-                        <Button fx:id="btnAgregarAlimento" mnemonicParsing="false" onAction="#clicAgregarAlimento" prefHeight="36.0" styleClass="button-primary" text="Agregar" />
-                        <Button fx:id="btnQuitarAlimento" mnemonicParsing="false" onAction="#clicQuitarAlimento" prefHeight="36.0" styleClass="button-danger" text="Quitar" />
+                        <Button fx:id="btnAgregarAlimento" mnemonicParsing="false" onAction="#clicAgregarAlimento" prefHeight="36.0" prefWidth="118.0" styleClass="button-primary" text="Agregar" />
+                        <Button fx:id="btnQuitarAlimento" mnemonicParsing="false" onAction="#clicQuitarAlimento" prefHeight="36.0" prefWidth="118.0" styleClass="button-danger" text="Quitar" />
                      </children>
                   </HBox>
                </children>

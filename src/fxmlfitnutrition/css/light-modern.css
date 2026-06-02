@@ -1,21 +1,21 @@
 /* ============================================================
-   FIT NUTRITION APP — JavaFX / FXML CSS
-   Tema: Nutrición Pastel — Fluent Design adaptado
+   FIT NUTRITION APP â€” JavaFX / FXML CSS
+   Tema: NutriciÃ³n Pastel â€” Fluent Design adaptado
    Compatible: Scene Builder 2.0, Java 8+
-   Versión: 2.0 — Componentes JavaFX completos
+   VersiÃ³n: 2.0 â€” Componentes JavaFX completos
 
-   PALETA SEMÁNTICA:
-   • Verde   #4A7C6F / #E8F5F0  → CREATE · Activo · Confirmada · Pacientes
-   • Amarillo #B8860B / #FFF8E1 → UPDATE · Reagendada · Advertencia
-   • Rojo    #C0392B / #FDECEA  → DELETE · Cancelar · Baja · Error
-   • Azul    #1565C0 / #E3F2FD  → INFO   · Médicos · Citas · Lectura
-   • Blanco/Gris                → Base universal de todos los fondos
+   PALETA SEMÃNTICA:
+   â€¢ Verde   #4A7C6F / #E8F5F0  â†’ CREATE Â· Activo Â· Confirmada Â· Pacientes
+   â€¢ Amarillo #B8860B / #FFF8E1 â†’ UPDATE Â· Reagendada Â· Advertencia
+   â€¢ Rojo    #C0392B / #FDECEA  â†’ DELETE Â· Cancelar Â· Baja Â· Error
+   â€¢ Azul    #1565C0 / #E3F2FD  â†’ INFO   Â· MÃ©dicos Â· Citas Â· Lectura
+   â€¢ Blanco/Gris                â†’ Base universal de todos los fondos
    ============================================================ */
 
 
-/* ════════════════════════════════════════════════════════════
-   1. ROOT — DESIGN TOKENS
-   ════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   1. ROOT â€” DESIGN TOKENS
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .root {
     /* Fondos */
@@ -25,28 +25,28 @@
     -fx-color-surface:         #FAFAFA;
     -fx-color-surface-card:    #FFFFFF;
 
-    /* Verde — CREATE / salud / activo */
+    /* Verde â€” CREATE / salud / activo */
     -fx-color-primary:         #4A7C6F;
     -fx-color-primary-dark:    #2E5E52;
     -fx-color-primary-light:   #E8F5F0;
     -fx-color-primary-mid:     #A8D5C5;
     -fx-color-primary-text:    #1B3D35;
 
-    /* Amarillo — UPDATE / edición / advertencia */
+    /* Amarillo â€” UPDATE / ediciÃ³n / advertencia */
     -fx-color-secondary:       #B8860B;
     -fx-color-secondary-dark:  #8A6308;
     -fx-color-secondary-light: #FFF8E1;
     -fx-color-secondary-mid:   #FFE082;
     -fx-color-secondary-text:  #5C3D00;
 
-    /* Rojo — DELETE / cancelar / baja / error */
+    /* Rojo â€” DELETE / cancelar / baja / error */
     -fx-color-danger:          #C0392B;
     -fx-color-danger-dark:     #922B21;
     -fx-color-danger-light:    #FDECEA;
     -fx-color-danger-mid:      #F5B7B1;
     -fx-color-danger-text:     #6B1008;
 
-    /* Azul — READ / info / médicos / citas */
+    /* Azul â€” READ / info / mÃ©dicos / citas */
     -fx-color-info:            #1565C0;
     -fx-color-info-dark:       #0D47A1;
     -fx-color-info-light:      #E3F2FD;
@@ -65,7 +65,7 @@
     -fx-color-border-input:    rgba(0,0,0,0.38);
     -fx-color-border-focus:    #4A7C6F;
 
-    /* Semáforo de estatus (citas / pacientes) */
+    /* SemÃ¡foro de estatus (citas / pacientes) */
     -fx-confirmada-bg:   #E8F5F0;   -fx-confirmada-tx:  #2E5E52;
     -fx-reagendada-bg:   #FFF8E1;   -fx-reagendada-tx:  #8A6308;
     -fx-cancelada-bg:    #FDECEA;   -fx-cancelada-tx:   #922B21;
@@ -81,7 +81,7 @@
     -fx-shadow-green: dropshadow(gaussian, rgba(74,124,111,0.28), 8, 0, 0, 3);
     -fx-shadow-red:   dropshadow(gaussian, rgba(192,57,43,0.28),  8, 0, 0, 3);
 
-    /* Tipografía */
+    /* TipografÃ­a */
     -fx-font-family: "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
     -fx-font-size:   14px;
     -fx-text-fill:   #1C1C1C;
@@ -98,11 +98,11 @@
 }
 
 
-/* ════════════════════════════════════════════════════════════
-   2. LABELS — Jerarquía tipográfica completa
-   ════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   2. LABELS â€” JerarquÃ­a tipogrÃ¡fica completa
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-/* ── Base ── */
+/* â”€â”€ Base â”€â”€ */
 .label {
     -fx-font-family:         "Segoe UI Variable", "Segoe UI", Arial, sans-serif;
     -fx-font-size:           14px;
@@ -111,14 +111,14 @@
     -fx-font-smoothing-type: lcd;
 }
 
-/* ── Escala de tamaños ── */
+/* â”€â”€ Escala de tamaÃ±os â”€â”€ */
 .label-xs       { -fx-font-size: 11px; -fx-text-fill: #5A5A5A; }
 .label-sm       { -fx-font-size: 12px; -fx-text-fill: #5A5A5A; }
 .label-base     { -fx-font-size: 14px; -fx-text-fill: #1C1C1C; }
 .label-lg       { -fx-font-size: 16px; -fx-text-fill: #1C1C1C; }
-.label-xl       { -fx-font-size: 20px; -fx-text-fill: #1C1C1C; }
+.label-xl       { -fx-font-size: 20px; -fx-text-fill: #FFFFFF; font-weight: bold; }
 
-/* ── Escala semántica (equivale a h1-h5 web) ── */
+/* â”€â”€ Escala semÃ¡ntica (equivale a h1-h5 web) â”€â”€ */
 .label-caption {
     -fx-font-size:   11px;
     -fx-text-fill:   #5A5A5A;
@@ -167,7 +167,7 @@
     -fx-font-weight: bold;
 }
 
-/* ── Pesos explícitos ── */
+/* â”€â”€ Pesos explÃ­citos â”€â”€ */
 .label-thin     { -fx-font-weight: 100; }
 .label-light    { -fx-font-weight: 300; }
 .label-regular  { -fx-font-weight: normal; }
@@ -175,19 +175,19 @@
 .label-semibold { -fx-font-weight: 600; }
 .label-bold     { -fx-font-weight: bold; }
 
-/* ── Helpers de uso frecuente ── */
+/* â”€â”€ Helpers de uso frecuente â”€â”€ */
 .label-secondary  { -fx-text-fill: #5A5A5A; -fx-font-size: 13px; }
 .label-disabled   { -fx-text-fill: #ADADAD; }
 .label-muted      { -fx-text-fill: #9E9E9E; -fx-font-size: 12px; }
 
-/* ── Semánticos de color ── */
+/* â”€â”€ SemÃ¡nticos de color â”€â”€ */
 .label-primary { -fx-text-fill: #4A7C6F; -fx-font-weight: bold; }
 .label-success { -fx-text-fill: #2E5E52; }
 .label-warning { -fx-text-fill: #B8860B; }
 .label-danger  { -fx-text-fill: #C0392B; }
 .label-info    { -fx-text-fill: #1565C0; }
 
-/* ── Etiquetas de estatus de cita ── */
+/* â”€â”€ Etiquetas de estatus de cita â”€â”€ */
 .label-confirmada { -fx-text-fill: #2E5E52; -fx-font-weight: bold; }
 .label-reagendada { -fx-text-fill: #8A6308; -fx-font-weight: bold; }
 .label-cancelada  { -fx-text-fill: #922B21; -fx-font-weight: bold; }
@@ -196,14 +196,14 @@
 .label-activo     { -fx-text-fill: #2E5E52; -fx-font-weight: bold; }
 .label-inactivo   { -fx-text-fill: #922B21; -fx-font-weight: bold; }
 
-/* ── Label con icono (graphic + text) ── */
+/* â”€â”€ Label con icono (graphic + text) â”€â”€ */
 .label-icon {
     -fx-font-size:        14px;
     -fx-graphic-text-gap: 6px;
     -fx-content-display:  left;
 }
 
-/* ── Encabezados de sección / módulo ── */
+/* â”€â”€ Encabezados de secciÃ³n / mÃ³dulo â”€â”€ */
 .label-section-header {
     -fx-font-size:      12px;
     -fx-font-weight:    bold;
@@ -243,11 +243,11 @@
 }
 
 
-/* ════════════════════════════════════════════════════════════
-   3. BUTTONS — CRUD completo con propósito semántico
-   ════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   3. BUTTONS â€” CRUD completo con propÃ³sito semÃ¡ntico
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-/* ── Base ── */
+/* â”€â”€ Base â”€â”€ */
 .button {
     -fx-background-color:  #FFFFFF, rgba(0,0,0,0.06), #FFFFFF;
     -fx-background-insets: 0, 0 0 1 0, 0 0 1 0;
@@ -293,7 +293,7 @@
     -fx-cursor:           default;
 }
 
-/* ── CREATE — Verde "Nuevo / Registrar / Guardar" ── */
+/* â”€â”€ CREATE â€” Verde "Nuevo / Registrar / Guardar" â”€â”€ */
 .button-create, .button.button-create {
     -fx-background-color:  #4A7C6F;
     -fx-background-insets: 0;
@@ -324,11 +324,11 @@
     -fx-cursor:           default;
 }
 
-/* Alias semántico para guardar/confirmar — mismo color */
+/* Alias semÃ¡ntico para guardar/confirmar â€” mismo color */
 .button-primary, .button.button-primary,
 .button-save,    .button.button-save,
 .button-confirm, .button.button-confirm {
-    -fx-background-color:  #4A7C6F;
+    -fx-background-color:  #26AA54;
     -fx-background-insets: 0;
     -fx-background-radius: 6;
     -fx-border-color:      transparent;
@@ -357,7 +357,7 @@
     -fx-effect:           null; -fx-cursor: default;
 }
 
-/* ── UPDATE — Amarillo "Editar / Modificar" ── */
+/* â”€â”€ UPDATE â€” Amarillo "Editar / Modificar" â”€â”€ */
 .button-update, .button.button-update,
 .button-edit,   .button.button-edit {
     -fx-background-color:  #FFF8E1;
@@ -395,7 +395,7 @@
     -fx-effect:           null; -fx-cursor: default;
 }
 
-/* ── DELETE / BAJA — Rojo "Cancelar / Dar de baja / Eliminar" ── */
+/* â”€â”€ DELETE / BAJA â€” Rojo "Cancelar / Dar de baja / Eliminar" â”€â”€ */
 .button-delete,  .button.button-delete,
 .button-danger,  .button.button-danger,
 .button-cancel,  .button.button-cancel,
@@ -434,7 +434,7 @@
     -fx-effect:           null; -fx-cursor: default;
 }
 
-/* ── READ / INFO — Azul "Buscar / Ver detalle / Médicos / Citas" ── */
+/* â”€â”€ READ / INFO â€” Azul "Buscar / Ver detalle / MÃ©dicos / Citas" â”€â”€ */
 .button-read,    .button.button-read,
 .button-info,    .button.button-info,
 .button-search,  .button.button-search,
@@ -476,7 +476,7 @@
     -fx-effect:           null; -fx-cursor: default;
 }
 
-/* ── Sutil / Ghost ── */
+/* â”€â”€ Sutil / Ghost â”€â”€ */
 .button-subtle, .button.button-subtle {
     -fx-background-color:  transparent;
     -fx-background-insets: 0;
@@ -495,7 +495,7 @@
     -fx-border-color: #4A7C6F; -fx-border-width: 1.5; -fx-border-radius: 6;
 }
 
-/* ── Variante solo icono (square) ── */
+/* â”€â”€ Variante solo icono (square) â”€â”€ */
 .button-icon {
     -fx-background-color:  transparent;
     -fx-border-color:      transparent;
@@ -511,7 +511,7 @@
 .button-icon:pressed { -fx-background-color: rgba(0,0,0,0.12); }
 .button-icon:focused { -fx-border-color: #4A7C6F; -fx-border-width: 1.5; }
 
-/* ── Toggle button ── */
+/* â”€â”€ Toggle button â”€â”€ */
 .toggle-button {
     -fx-background-color:  #FFFFFF, rgba(0,0,0,0.06), #FFFFFF;
     -fx-background-insets: 0, 0 0 1 0, 0 0 1 0;
@@ -534,9 +534,9 @@
 .toggle-button:focused { -fx-border-color: #4A7C6F; -fx-border-width: 2; }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    4. TEXT FIELD & PASSWORD FIELD
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .text-field, .password-field {
     -fx-background-color:    #FFFFFF;
@@ -598,9 +598,9 @@
 }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    5. COMBO BOX
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .combo-box {
     -fx-background-color:  #FFFFFF, rgba(0,0,0,0.06), #FFFFFF;
@@ -663,9 +663,9 @@
 .combo-box:hover .arrow-button .arrow  { -fx-background-color: #4A7C6F; }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    6. CHECK BOX
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .check-box {
     -fx-font-size:    14px;
@@ -709,9 +709,9 @@
 .check-box:disabled .label  { -fx-text-fill: #ADADAD; }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    7. RADIO BUTTON
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .radio-button {
     -fx-font-size:       14px;
@@ -744,9 +744,9 @@
 .radio-button:disabled .label   { -fx-text-fill: #ADADAD; }
 
 
-/* ════════════════════════════════════════════════════════════
-   8. TABLE VIEW — Corazón de los módulos CRUD
-   ════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   8. TABLE VIEW â€” CorazÃ³n de los mÃ³dulos CRUD
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .table-view {
     -fx-background-color:  #FFFFFF;
@@ -816,7 +816,7 @@
     -fx-font-weight: 500;
 }
 
-/* Celda numérica / IMC / Calorías */
+/* Celda numÃ©rica / IMC / CalorÃ­as */
 .table-cell-numeric {
     -fx-font-family: "Segoe UI Variable", "Consolas", monospace;
     -fx-font-weight: bold;
@@ -831,7 +831,7 @@
 .table-view .scroll-bar:vertical,
 .table-view .scroll-bar:horizontal { -fx-background-color: transparent; }
 
-/* Estado vacío */
+/* Estado vacÃ­o */
 .table-view .placeholder .label {
     -fx-text-fill:    #ADADAD;
     -fx-font-size:    14px;
@@ -839,9 +839,9 @@
 }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    9. MENU BAR & CONTEXT MENU
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .menu-bar {
     -fx-background-color: #FFFFFF;
@@ -890,9 +890,9 @@
 .separator.menu-item .line    { -fx-border-color: rgba(0,0,0,0.08); -fx-border-width: 1 0 0 0; }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    10. DATE PICKER
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .date-picker {
     -fx-background-color:  #FFFFFF, rgba(0,0,0,0.06), #FFFFFF;
@@ -959,9 +959,9 @@
 .date-picker-popup .next-month       { -fx-text-fill: #C8C8C8; }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    11. TAB PANE
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .tab-pane { -fx-tab-min-height: 40px; -fx-tab-max-height: 40px; }
 
@@ -1014,9 +1014,9 @@
 .tab-pane-pill .tab:selected .tab-label { -fx-text-fill: #1C1C1C; -fx-font-weight: bold; }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    12. SCROLL PANE & SCROLL BAR
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .scroll-pane, .scroll-pane > .viewport {
     -fx-background-color: transparent;
@@ -1041,9 +1041,9 @@
 }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    13. TOOL BAR
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .tool-bar {
     -fx-background-color: #FFFFFF;
@@ -1071,11 +1071,11 @@
 .tool-bar .label { -fx-text-fill: #1C1C1C; -fx-font-size: 14px; }
 
 
-/* ════════════════════════════════════════════════════════════
-   14. CARDS / PANELS — contenedores con propósito semántico
-   ════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   14. CARDS / PANELS â€” contenedores con propÃ³sito semÃ¡ntico
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-/* ── Card base ── */
+/* â”€â”€ Card base â”€â”€ */
 .card {
     -fx-background-color:  #FFFFFF;
     -fx-background-radius: 10;
@@ -1100,9 +1100,9 @@
     -fx-effect:            dropshadow(gaussian, rgba(0,0,0,0.05), 4, 0, 0, 1);
 }
 
-/* ── Cards con acento de borde izquierdo por módulo ── */
+/* â”€â”€ Cards con acento de borde izquierdo por mÃ³dulo â”€â”€ */
 
-/* Módulo Pacientes / CREATE */
+/* MÃ³dulo Pacientes / CREATE */
 .card-paciente, .card-create {
     -fx-background-color:  #FFFFFF;
     -fx-background-radius: 8;
@@ -1113,7 +1113,7 @@
     -fx-effect:            dropshadow(gaussian, rgba(74,124,111,0.10), 6, 0, 0, 2);
 }
 
-/* Módulo Médicos / Citas / READ */
+/* MÃ³dulo MÃ©dicos / Citas / READ */
 .card-medico, .card-cita, .card-read {
     -fx-background-color:  #FFFFFF;
     -fx-background-radius: 8;
@@ -1124,7 +1124,7 @@
     -fx-effect:            dropshadow(gaussian, rgba(21,101,192,0.10), 6, 0, 0, 2);
 }
 
-/* UPDATE / Edición */
+/* UPDATE / EdiciÃ³n */
 .card-edit, .card-update {
     -fx-background-color:  #FFFDF5;
     -fx-background-radius: 8;
@@ -1135,7 +1135,7 @@
     -fx-effect:            dropshadow(gaussian, rgba(184,134,11,0.10), 6, 0, 0, 2);
 }
 
-/* DELETE / Baja / Cancelación */
+/* DELETE / Baja / CancelaciÃ³n */
 .card-danger, .card-delete, .card-baja {
     -fx-background-color:  #FFFAFA;
     -fx-background-radius: 8;
@@ -1146,7 +1146,7 @@
     -fx-effect:            dropshadow(gaussian, rgba(192,57,43,0.10), 6, 0, 0, 2);
 }
 
-/* Card de estadística / KPI */
+/* Card de estadÃ­stica / KPI */
 .card-stat {
     -fx-background-color:  #FFFFFF;
     -fx-background-radius: 10;
@@ -1196,9 +1196,9 @@
 }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    15. VBOX / HBOX PERSONALIZADOS
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .vbox-form        { -fx-spacing: 14; -fx-padding: 0; }
 .vbox-form-compact { -fx-spacing: 8;  -fx-padding: 0; }
@@ -1242,9 +1242,9 @@
 .sidebar-item:focused  { -fx-border-color: #4A7C6F; -fx-border-width: 1.5; -fx-border-radius: 6; }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    16. LIST VIEW
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .list-view {
     -fx-background-color:  #FFFFFF;
@@ -1270,9 +1270,9 @@
 .list-view .list-cell:empty    { -fx-background-color: transparent; -fx-border-color: transparent; }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    17. BADGE / TAG CHIPS
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .badge {
     -fx-background-color:  #EBEBEB;
@@ -1283,7 +1283,7 @@
     -fx-padding:           3 10 3 10;
 }
 
-/* Por operación CRUD */
+/* Por operaciÃ³n CRUD */
 .badge-create, .badge-success, .badge-confirmada, .badge-activo, .badge-asistida {
     -fx-background-color: #E8F5F0; -fx-text-fill: #2E5E52;
     -fx-background-radius: 20; -fx-font-size: 11px; -fx-font-weight: bold; -fx-padding: 3 10 3 10;
@@ -1306,9 +1306,9 @@
 }
 
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    18. TEXT AREA
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .text-area {
     -fx-background-color:    #FFFFFF;
@@ -1329,10 +1329,10 @@
 .text-area:disabled  { -fx-background-color: #F5F5F5; -fx-border-color: rgba(0,0,0,0.12); -fx-opacity: 1; }
 
 
-/* ════════════════════════════════════════════════════════════
-   19. MISC: Slider · Progress · Spinner · Tooltip · Separator
-             Dialog · Hyperlink · Titled Pane · Split Pane · Status Bar
-   ════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   19. MISC: Slider Â· Progress Â· Spinner Â· Tooltip Â· Separator
+             Dialog Â· Hyperlink Â· Titled Pane Â· Split Pane Â· Status Bar
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 /* Slider */
 .slider .track  { -fx-background-color: rgba(0,0,0,0.12); -fx-background-radius: 4; }
@@ -1432,3 +1432,153 @@
 /* Status Bar */
 .status-bar { -fx-background-color: #F7F7F7; -fx-border-color: rgba(0,0,0,0.08) transparent transparent transparent; -fx-border-width: 1 0 0 0; -fx-padding: 4 12 4 12; -fx-spacing: 8; }
 .status-bar .label { -fx-text-fill: #5A5A5A; -fx-font-size: 12px; }
+
+/* ============================================================
+   FIT NUTRITION - Brand overrides
+   Primary: #26AA54 | Secondary: #FEA702
+   ============================================================ */
+.root, .label, .button, .text-field, .text-area, .combo-box, .table-view, .list-view, .tree-view, .date-picker, .spinner {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+.root {
+    -fx-color-primary: #26AA54;
+    -fx-color-primary-dark: #1F8F45;
+    -fx-color-primary-light: #E9F8EE;
+    -fx-color-primary-mid: #9BE0B3;
+    -fx-color-primary-text: #0E4F25;
+    -fx-color-secondary: #FEA702;
+    -fx-color-secondary-dark: #C77D00;
+    -fx-color-secondary-light: #FFF4D8;
+    -fx-color-secondary-mid: #FFD37A;
+    -fx-color-secondary-text: #6E4500;
+    -fx-color-border-focus: #26AA54;
+    -fx-background-color: #F6F8F5;
+    -fx-background: #F6F8F5;
+}
+.label-title, .label-title-large, .label-display, .label-primary, .label-imc {
+    -fx-text-fill: #26AA54;
+}
+.label-warning, .label-calorias {
+    -fx-text-fill: #FEA702;
+}
+.button-primary, .button-create, .button-save, .button-confirm,
+.button.button-primary, .button.button-create, .button.button-save, .button.button-confirm {
+    -fx-background-color: #26AA54;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(38,170,84,0.30), 8, 0, 0, 2);
+}
+.button-primary:hover, .button-create:hover, .button-save:hover, .button-confirm:hover,
+.button.button-primary:hover, .button.button-create:hover, .button.button-save:hover, .button.button-confirm:hover {
+    -fx-background-color: #2FC765;
+    -fx-effect: dropshadow(gaussian, rgba(38,170,84,0.42), 12, 0, 0, 4);
+}
+.button-primary:pressed, .button-create:pressed, .button-save:pressed, .button-confirm:pressed,
+.button.button-primary:pressed, .button.button-create:pressed, .button.button-save:pressed, .button.button-confirm:pressed {
+    -fx-background-color: #1F8F45;
+    -fx-effect: null;
+}
+.button-edit, .button-update, .button-secondary,
+.button.button-edit, .button.button-update, .button.button-secondary {
+    -fx-background-color: #FEA702;
+    -fx-text-fill: #2F2300;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(254,167,2,0.28), 8, 0, 0, 2);
+}
+.button-edit:hover, .button-update:hover, .button-secondary:hover,
+.button.button-edit:hover, .button.button-update:hover, .button.button-secondary:hover {
+    -fx-background-color: #FFB82E;
+    -fx-effect: dropshadow(gaussian, rgba(254,167,2,0.40), 12, 0, 0, 4);
+}
+.button-edit:pressed, .button-update:pressed, .button-secondary:pressed,
+.button.button-edit:pressed, .button.button-update:pressed, .button.button-secondary:pressed {
+    -fx-background-color: #C77D00;
+    -fx-text-fill: white;
+    -fx-effect: null;
+}
+.button-info, .button-read, .button-search, .button-detail,
+.button.button-info, .button.button-read, .button.button-search, .button.button-detail {
+    -fx-background-color: #E9F8EE;
+    -fx-border-color: #9BE0B3;
+    -fx-text-fill: #1F8F45;
+    -fx-font-weight: bold;
+}
+.button-info:hover, .button-read:hover, .button-search:hover, .button-detail:hover,
+.button.button-info:hover, .button.button-read:hover, .button.button-search:hover, .button.button-detail:hover {
+    -fx-background-color: #D8F3E2;
+    -fx-border-color: #26AA54;
+}
+.text-field:focused, .text-area:focused, .combo-box:focused, .date-picker:focused, .spinner:focused {
+    -fx-border-color: transparent transparent #26AA54 transparent;
+    -fx-highlight-fill: #9BE0B3;
+    -fx-highlight-text-fill: #0E4F25;
+}
+.table-view .column-header-background {
+    -fx-background-color: #26AA54;
+}
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: #26AA54;
+}
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.table-row-cell:selected, .table-row-cell:filled:selected:hover {
+    -fx-background-color: #E9F8EE;
+    -fx-table-cell-border-color: #9BE0B3;
+}
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: #0E4F25;
+}
+.sidebar-item:hover, .list-item:hover, .list-view .list-cell:hover, .tree-cell:hover {
+    -fx-background-color: #E9F8EE;
+}
+.sidebar-item:pressed, .sidebar-item:selected, .list-item:focused, .list-view .list-cell:selected, .tree-cell:selected {
+    -fx-background-color: #D8F3E2;
+    -fx-border-color: transparent transparent transparent #26AA54;
+}
+.progress-bar .bar {
+    -fx-background-color: #26AA54;
+}
+.tooltip {
+    -fx-background-color: #1F8F45;
+}
+
+/* Menu principal */
+.menu-panel {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: transparent rgba(0,0,0,0.08) transparent transparent;
+    -fx-border-width: 0 1 0 0;
+}
+
+.menu-button, .button.menu-button {
+    -fx-background-color: #FFFFFF;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 4;
+    -fx-border-radius: 0;
+    -fx-text-fill: #1C1C1C;
+    -fx-font-weight: 600;
+    -fx-padding: 0 0 0 36;
+    -fx-alignment: baseline-left;
+    -fx-effect: null;
+}
+
+.menu-button:hover, .button.menu-button:hover {
+    -fx-background-color: #F6F8F5;
+    -fx-border-color: transparent;
+    -fx-effect: null;
+}
+
+.menu-button-active, .button.menu-button-active,
+.menu-button-active:hover, .button.menu-button-active:hover,
+.menu-button-active:focused, .button.menu-button-active:focused {
+    -fx-background-color: #DCF0E7;
+    -fx-text-fill: #0E4F25;
+    -fx-border-color: transparent transparent transparent #26AA54;
+    -fx-border-width: 0 0 0 4;
+    -fx-effect: null;
+}

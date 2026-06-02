@@ -71,8 +71,25 @@ public class FXMLCitasController implements Initializable, NotificacionOperacion
     }
 
     private void configurarTabla() {
-        colFecha.setCellValueFactory(new PropertyValueFactory<>("fechaCita"));
-        colHora.setCellValueFactory(new PropertyValueFactory<>("horaCita"));
+        colFecha.setCellValueFactory(cellData -> {
+            String fecha = cellData.getValue().getFechaCita();
+            if (fecha != null && fecha.contains("-")) {
+                try {
+                    LocalDate date = LocalDate.parse(fecha);
+                    return new SimpleStringProperty(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                } catch (Exception e) {
+                    // Fallback to original
+                }
+            }
+            return new SimpleStringProperty(fecha);
+        });
+        colHora.setCellValueFactory(cellData -> {
+            String hora = cellData.getValue().getHoraCita();
+            if (hora != null && hora.length() >= 5) {
+                return new SimpleStringProperty(hora.substring(0, 5));
+            }
+            return new SimpleStringProperty(hora);
+        });
         colPaciente.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getNombrePacienteCompleto())
         );

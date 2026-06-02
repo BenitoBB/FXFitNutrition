@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import utilidad.Sesion;
 
 /**
- * FXML Controller class - Menú Principal y Control de Roles (CARD FX-03)
+ * FXML Controller class - MenÃƒÂº Principal y Control de Roles (CARD FX-03)
  */
 public class FXMLMenuPrincipalController implements Initializable {
 
@@ -45,6 +45,19 @@ public class FXMLMenuPrincipalController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarMenu();
     }
+    private void marcarMenuSeleccionado(Button botonSeleccionado) {
+        Button[] botonesMenu = {btnPacientes, btnCitas, btnConsultas, btnDietas, btnAlimentos, btnMedicos};
+        for (Button boton : botonesMenu) {
+            if (boton != null) {
+                boton.getStyleClass().remove("menu-button-active");
+            }
+        }
+        if (botonSeleccionado != null && !botonSeleccionado.getStyleClass().contains("menu-button-active")) {
+            botonSeleccionado.getStyleClass().add("menu-button-active");
+        }
+    }
+
+
 
     private void configurarMenu() {
         if (Sesion.getMedicoSesion() != null) {
@@ -55,9 +68,9 @@ public class FXMLMenuPrincipalController implements Initializable {
                 btnMedicos.setVisible(true);
                 btnMedicos.setManaged(true);
             } else {
-                lbRol.setText("Médico");
+                lbRol.setText("MÃƒÂ©dico");
                 btnMedicos.setVisible(false);
-                btnMedicos.setManaged(false); // Elimina el espacio del botón
+                btnMedicos.setManaged(false); // Elimina el espacio del botÃƒÂ³n
             }
         }
     }
@@ -65,6 +78,7 @@ public class FXMLMenuPrincipalController implements Initializable {
     @FXML
     private void clicPacientes(ActionEvent event) {
         try {
+            marcarMenuSeleccionado(btnPacientes);
 
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource(
@@ -85,6 +99,7 @@ public class FXMLMenuPrincipalController implements Initializable {
     @FXML
     private void clicCitas(ActionEvent event) {
         try {
+            marcarMenuSeleccionado(btnCitas);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfitnutrition/vistas/cita/FXMLCitas.fxml"));
             Parent vista = loader.load();
             apCentral.getChildren().clear();
@@ -97,6 +112,7 @@ public class FXMLMenuPrincipalController implements Initializable {
     @FXML
     private void clicConsultas(ActionEvent event) {
         try {
+            marcarMenuSeleccionado(btnConsultas);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfitnutrition/vistas/consulta/FXMLConsultas.fxml"));
             Parent vista = loader.load();
             apCentral.getChildren().clear();
@@ -109,6 +125,7 @@ public class FXMLMenuPrincipalController implements Initializable {
     @FXML
     private void clicDietas(ActionEvent event) {
         try {
+            marcarMenuSeleccionado(btnDietas);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfitnutrition/vistas/dieta/FXMLDietas.fxml"));
             Parent vista = loader.load();
             apCentral.getChildren().clear();
@@ -121,6 +138,7 @@ public class FXMLMenuPrincipalController implements Initializable {
     @FXML
     private void clicAlimentos(ActionEvent event) {
         try {
+            marcarMenuSeleccionado(btnAlimentos);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfitnutrition/vistas/alimento/FXMLAlimentos.fxml"));
             Parent vista = loader.load();
             apCentral.getChildren().clear();
@@ -132,7 +150,15 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void clicMedicos(ActionEvent event) {
-        System.out.println("Navegar a Médicos");
+        try {
+            marcarMenuSeleccionado(btnMedicos);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxmlfitnutrition/vistas/medico/FXMLMedicos.fxml"));
+            Parent vista = loader.load();
+            apCentral.getChildren().clear();
+            apCentral.getChildren().add(vista);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -144,7 +170,7 @@ public class FXMLMenuPrincipalController implements Initializable {
             Scene escena = new Scene(root);
             Stage nuevoStage = new Stage();
             nuevoStage.setScene(escena);
-            nuevoStage.setTitle("Inicio de Sesión");
+            nuevoStage.setTitle("Inicio de SesiÃƒÂ³n");
             nuevoStage.show();
             stageActual.close();
         } catch (IOException e) {
@@ -152,3 +178,4 @@ public class FXMLMenuPrincipalController implements Initializable {
         }
     }
 }
+
