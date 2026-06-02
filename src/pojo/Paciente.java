@@ -18,6 +18,16 @@ public class Paciente {
     private int idMedico;
     private int estatus;
     
+    // Campos extra para mostrar la dirección en listas (vienen planos del JSON del API)
+    private String direccionCompleta;
+    private String calle;
+    private String numero;
+    private Integer idColonia;
+    private String nombreColonia;
+    private String codigoPostal;
+    private String ciudad;
+    private String estado;
+    
     private Domicilio domicilio;
 
     public Paciente() {}
@@ -70,7 +80,22 @@ public class Paciente {
     public int getEstatus() { return estatus; }
     public void setEstatus(int estatus) { this.estatus = estatus; }
 
-    public Domicilio getDomicilio() { return domicilio; }
+    public Domicilio getDomicilio() {
+        if (domicilio == null && (calle != null || idColonia != null || idDomicilio != null)) {
+            domicilio = new Domicilio();
+            domicilio.setIdDomicilio(idDomicilio != null ? idDomicilio : 0);
+            domicilio.setCalle(calle);
+            domicilio.setNumero(numero);
+            if (idColonia != null) {
+                domicilio.setIdColonia(idColonia);
+            }
+            domicilio.setColonia(nombreColonia);
+            domicilio.setCodigoPostal(codigoPostal);
+            domicilio.setCiudad(ciudad);
+            domicilio.setEstado(estado);
+        }
+        return domicilio;
+    }
     public void setDomicilio(Domicilio domicilio) { this.domicilio = domicilio; }
     
     public String getNombreCompleto() {
@@ -79,6 +104,16 @@ public class Paciente {
             completo += " " + segundoApellido;
         }
         return completo;
+    }
+
+    public String getDireccionCompleta() {
+        if (direccionCompleta != null && !direccionCompleta.trim().isEmpty()) {
+            return direccionCompleta;
+        }
+        if (domicilio != null) {
+            return domicilio.getDireccionCompleta();
+        }
+        return "Sin dirección";
     }
 
     @Override
