@@ -1,60 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1250.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="fxmlfitnutrition.vistas.medico.FXMLMedicoFormularioController">
-    <stylesheets>
-        <URL value="@/fxmlfitnutrition/css/light-modern.css" />
-    </stylesheets>
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="800.0" stylesheets="@../../css/light-modern.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.vistas.medico.FXMLMedicoFormularioController">
    <children>
-      <Label layoutX="28.0" layoutY="29.0" styleClass="label-title" stylesheets="@css/light-modern.css" text="Crear médico" />
-      <Label layoutX="28.0" layoutY="61.0" styleClass="label-light" stylesheets="@css/light-modern.css" text="Registre todos los datos para su creación" />
-      <TextField fx:id="tfNombre" layoutX="28.0" layoutY="116.0" stylesheets="@css/light-modern.css" />
-      <Label layoutX="28.0" layoutY="93.0" stylesheets="@css/light-modern.css" text="Nombre:" />
-      <Label layoutX="215.0" layoutY="92.0" stylesheets="@css/light-modern.css" text="Primer Apellido:" />
-      <TextField fx:id="tfPrimerApellido" layoutX="215.0" layoutY="115.0" stylesheets="@css/light-modern.css" />
-      <TextField fx:id="tfSegundoApellido" layoutX="405.0" layoutY="114.0" stylesheets="@css/light-modern.css" />
-      <Label layoutX="405.0" layoutY="91.0" stylesheets="@css/light-modern.css" text="Segundo Apellido:" />
-      <Label layoutX="28.0" layoutY="162.0" stylesheets="@css/light-modern.css" text="Fecha de nacimiento:" />
-      <DatePicker fx:id="dpFechaNacimiento" layoutX="28.0" layoutY="189.0" stylesheets="@css/light-modern.css" />
-      <Label layoutX="28.0" layoutY="227.0" stylesheets="@css/light-modern.css" text="Sexo:" />
-      <RadioButton fx:id="rbMasculino" layoutX="32.0" layoutY="264.0" mnemonicParsing="false" stylesheets="@css/light-modern.css" text="Masculino" />
-      <RadioButton fx:id="rbFemenino" layoutX="159.0" layoutY="264.0" mnemonicParsing="false" stylesheets="@css/light-modern.css" text="Femenino" />
-      <Label layoutX="28.0" layoutY="300.0" stylesheets="@css/light-modern.css" text="Domicilio" />
-      <Label layoutX="31.0" layoutY="328.0" stylesheets="@css/light-modern.css" text="CP" />
-      <TextField fx:id="tfCodigoPostal" layoutX="27.0" layoutY="348.0" stylesheets="@css/light-modern.css" />
-      <Label layoutX="231.0" layoutY="328.0" stylesheets="@css/light-modern.css" text="Estado" />
-      <TextField fx:id="tfEstado" editable="false" layoutX="231.0" layoutY="348.0" stylesheets="@css/light-modern.css" />
-      <Label layoutX="421.0" layoutY="328.0" stylesheets="@css/light-modern.css" text="Municipio" />
-      <TextField fx:id="tfCiudad" editable="false" layoutX="420.0" layoutY="348.0" stylesheets="@css/light-modern.css" />
-      <Label layoutX="617.0" layoutY="328.0" stylesheets="@css/light-modern.css" text="Colonia" />
-      <ComboBox fx:id="cbColonia" layoutX="617.0" layoutY="350.0" prefHeight="38.0" prefWidth="208.0" stylesheets="@css/light-modern.css" />
-      
-      <Label layoutX="31.0" layoutY="400.0" stylesheets="@css/light-modern.css" text="Calle" />
-      <TextField fx:id="tfCalle" layoutX="27.0" layoutY="420.0" stylesheets="@css/light-modern.css" />
-      <Label layoutX="231.0" layoutY="400.0" stylesheets="@css/light-modern.css" text="Número" />
-      <TextField fx:id="tfNumero" layoutX="231.0" layoutY="420.0" stylesheets="@css/light-modern.css" />
+      <VBox spacing="15.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="20.0">
+         <children>
+            <VBox spacing="5.0">
+               <Label styleClass="label-title" text="Crear médico" />
+               <Label styleClass="label-light" text="Registre todos los datos para su creación" />
+            </VBox>
+            
+            <Label text="Datos Personales" styleClass="label-subtitle" style="-fx-font-weight: bold;" />
+            <GridPane hgap="15.0" vgap="10.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.3" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.3" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.3" />
+               </columnConstraints>
+               <children>
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                     <Label text="Nombre:" />
+                     <TextField fx:id="tfNombre" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                     <Label text="Primer Apellido:" />
+                     <TextField fx:id="tfPrimerApellido" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">
+                     <Label text="Segundo Apellido:" />
+                     <TextField fx:id="tfSegundoApellido" />
+                  </VBox>
+                  
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                     <Label text="Fecha de nacimiento:" />
+                     <DatePicker fx:id="dpFechaNacimiento" maxWidth="Infinity" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.columnSpan="2">
+                     <Label text="Sexo:" />
+                     <HBox spacing="20.0" alignment="CENTER_LEFT" prefHeight="38.0">
+                        <RadioButton fx:id="rbMasculino" mnemonicParsing="false" text="Masculino" />
+                        <RadioButton fx:id="rbFemenino" mnemonicParsing="false" text="Femenino" />
+                     </HBox>
+                  </VBox>
+               </children>
+            </GridPane>
 
-      <Label layoutX="32.0" layoutY="470.0" stylesheets="@css/light-modern.css" text="Cédula Profesional" />
-      <TextField fx:id="tfCedula" layoutX="33.0" layoutY="490.0" stylesheets="@css/light-modern.css" />
-      
-      <Label layoutX="246.0" layoutY="470.0" stylesheets="@css/light-modern.css" text="Número de Personal" />
-      <TextField fx:id="tfNoPersonal" layoutX="243.0" layoutY="490.0" stylesheets="@css/light-modern.css" />
-      
-      <Label layoutX="39.0" layoutY="540.0" stylesheets="@css/light-modern.css" text="Contraseña:" />
-      <PasswordField fx:id="tfContrasena" layoutX="33.0" layoutY="560.0" stylesheets="@css/light-modern.css" />
-      <Label layoutX="246.0" layoutY="540.0" stylesheets="@css/light-modern.css" text="Repetir contraseña:" />
-      <PasswordField fx:id="tfRepetirContrasena" layoutX="243.0" layoutY="560.0" stylesheets="@css/light-modern.css" />
-      
-      <CheckBox fx:id="chkAdmin" layoutX="36.0" layoutY="620.0" mnemonicParsing="false" stylesheets="@css/light-modern.css" text="¿Es administrador?" />
-      
-      <Label fx:id="lbMensajeError" layoutX="500.0" layoutY="650.0" textFill="RED" visible="false" />
-      <Button fx:id="btnGuardar" layoutX="991.0" layoutY="640.0" mnemonicParsing="false" onAction="#clicGuardar" styleClass="button-save" stylesheets="@css/light-modern.css" text="Guardar" />
-      <Button fx:id="btnCancelar" layoutX="1115.0" layoutY="640.0" mnemonicParsing="false" onAction="#clicCancelar" styleClass="button-cancel" stylesheets="@css/light-modern.css" text="Cancelar" />
+            <Label text="Domicilio" styleClass="label-subtitle" style="-fx-font-weight: bold;">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+            <GridPane hgap="15.0" vgap="10.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.3" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.3" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="33.3" />
+               </columnConstraints>
+               <children>
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                     <Label text="CP" />
+                     <TextField fx:id="tfCodigoPostal" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                     <Label text="Estado" />
+                     <TextField fx:id="tfEstado" editable="false" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="2" GridPane.rowIndex="0">
+                     <Label text="Municipio" />
+                     <TextField fx:id="tfCiudad" editable="false" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="1">
+                     <Label text="Colonia" />
+                     <ComboBox fx:id="cbColonia" maxWidth="Infinity" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <Label text="Calle" />
+                     <TextField fx:id="tfCalle" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <Label text="Número" />
+                     <TextField fx:id="tfNumero" />
+                  </VBox>
+               </children>
+            </GridPane>
+
+            <Label text="Datos Profesionales y Acceso" styleClass="label-subtitle" style="-fx-font-weight: bold;">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Label>
+            <GridPane hgap="15.0" vgap="10.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+               </columnConstraints>
+               <children>
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                     <Label text="Cédula Profesional" />
+                     <TextField fx:id="tfCedula" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                     <Label text="Número de Personal" />
+                     <TextField fx:id="tfNoPersonal" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                     <Label text="Contraseña:" />
+                     <PasswordField fx:id="tfContrasena" />
+                  </VBox>
+                  <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <Label text="Repetir contraseña:" />
+                     <PasswordField fx:id="tfRepetirContrasena" />
+                  </VBox>
+               </children>
+            </GridPane>
+            
+            <CheckBox fx:id="chkAdmin" mnemonicParsing="false" text="¿Es administrador?">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </CheckBox>
+
+            <HBox alignment="CENTER_RIGHT" spacing="20.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label fx:id="lbMensajeError" textFill="RED" visible="false" />
+                  <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#clicCancelar" prefWidth="120.0" styleClass="button-cancel" text="Cancelar" />
+                  <Button fx:id="btnGuardar" mnemonicParsing="false" onAction="#clicGuardar" prefWidth="120.0" styleClass="button-save" text="Guardar" />
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
