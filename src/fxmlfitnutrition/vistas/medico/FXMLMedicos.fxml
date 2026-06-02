@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="fxmlfitnutrition.vistas.medico.FXMLMedicosController">
+    <stylesheets>
+        <URL value="@/fxmlfitnutrition/css/light-modern.css" />
+    </stylesheets>
+   <children>
+      <Label layoutX="32.0" layoutY="74.0" styleClass="label-title" stylesheets="@css/light-modern.css" text="Administración de Personal Médico" />
+      <Label layoutX="32.0" layoutY="106.0" styleClass="label-light" stylesheets="@css/light-modern.css" text="Gestión centralizada de Médicos" />
+      <TableView fx:id="tvMedicos" layoutX="33.0" layoutY="136.0" prefHeight="559.0" prefWidth="1223.0" stylesheets="@css/light-modern.css">
+        <columns>
+          <TableColumn fx:id="colNombre" prefWidth="300.0" text="Nombre Completo" />
+          <TableColumn fx:id="colCedula" prefWidth="200.0" text="Cédula Profesional" />
+          <TableColumn fx:id="colDireccion" prefWidth="500.0" text="Dirección" />
+          <TableColumn fx:id="colAdmin" prefWidth="150.0" text="Es Admin" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnNuevo" layoutX="33.0" layoutY="32.0" mnemonicParsing="false" onAction="#clicNuevo" styleClass="button-create" stylesheets="@css/light-modern.css" text="Nuevo Médico" />
+      <Button fx:id="btnEditar" layoutX="194.0" layoutY="32.0" mnemonicParsing="false" onAction="#clicEditar" styleClass="button-edit" stylesheets="@css/light-modern.css" text="Editar" />
+      <Button fx:id="btnBaja" layoutX="301.0" layoutY="32.0" mnemonicParsing="false" onAction="#clicBaja" styleClass="button-delete" stylesheets="@css/light-modern.css" text="Dar Baja" />
+      <TextField fx:id="tfBuscar" layoutX="422.0" layoutY="30.0" prefHeight="42.0" prefWidth="393.0" promptText="Buscar médico..." stylesheets="@css/light-modern.css" />
+   </children>
+</AnchorPane>
