@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="660.0" prefWidth="1030.0" stylesheets="@css/light-modern.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxmlfitnutrition.vistas.paciente.FXMLPacientesController">
+   <children>
+      <Label layoutX="30.0" layoutY="20.0" styleClass="label-title" text="Gestión de Pacientes">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+      
+      <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="70.0" prefHeight="50.0" prefWidth="970.0" spacing="20.0">
+         <children>
+            <TextField fx:id="tfBuscar" prefHeight="40.0" prefWidth="400.0" promptText="Buscar paciente por nombre, apellido..." />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="btnRegistrar" mnemonicParsing="false" onAction="#clicRegistrar" prefHeight="40.0" styleClass="button-primary" text="Registrar Paciente" />
+         </children>
+      </HBox>
+      
+      <TableView fx:id="tvPacientes" layoutX="30.0" layoutY="140.0" prefHeight="420.0" prefWidth="970.0">
+        <columns>
+          <TableColumn fx:id="colNombre" prefWidth="225.0" text="Nombre Completo" />
+          <TableColumn fx:id="colTelefono" prefWidth="135.0" text="Teléfono" />
+          <TableColumn fx:id="colCorreo" prefWidth="225.0" text="Correo Electrónico" />
+          <TableColumn fx:id="colFechaNacimiento" prefWidth="145.0" text="Fecha de Nacimiento" />
+          <TableColumn fx:id="colDireccion" prefWidth="250.0" text="Dirección" />
+          <TableColumn fx:id="colEstatus" prefWidth="105.0" text="Estatus" />
+          <TableColumn fx:id="colHistorial" prefWidth="135.0" text="Historial" />
+        </columns>
+      </TableView>
+      
+      <HBox alignment="CENTER_RIGHT" layoutX="30.0" layoutY="580.0" prefHeight="50.0" prefWidth="970.0" spacing="15.0">
+         <children>
+            <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#clicEditar" prefHeight="40.0" text="Editar Paciente" />
+            <Button fx:id="btnDarDeBaja" mnemonicParsing="false" onAction="#clicDarDeBaja" prefHeight="40.0" styleClass="button-danger" text="Dar de Baja" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
