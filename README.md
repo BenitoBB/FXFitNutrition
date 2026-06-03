@@ -6,11 +6,6 @@ Este documento resume la evidencia técnica de tres entregables del proyecto Fit
 - Integración UI con API REST.
 - Módulo de seguridad y login.
 
-La entrega se respalda con los repositorios del sistema:
-
-- Aplicación de escritorio JavaFX: `C:\Users\benit\NetBeansProjects\FXFitNutrition`
-- API REST: `C:\Users\benit\NetBeansProjects\APIFitNutrition\api-rest-fitnutrition`
-
 ---
 
 ## 1. Desarrollo UI Escritorio JavaFX
