@@ -157,6 +157,8 @@ public class FXMLMedicoFormularioController implements Initializable {
 
         if (coloniasActuales != null && !coloniasActuales.isEmpty()) {
             cbColonia.getItems().addAll(coloniasActuales);
+            // Auto-seleccionar la primera colonia para llenar ciudad/estado automáticamente
+            cbColonia.setValue(coloniasActuales.get(0));
         } else {
             Utilidades.mostrarAlertaSimple("Sin resultados", "No se encontraron colonias para el código postal ingresado.", Alert.AlertType.WARNING);
         }
