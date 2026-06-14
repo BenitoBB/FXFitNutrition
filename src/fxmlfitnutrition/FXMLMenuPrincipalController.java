@@ -68,7 +68,7 @@ public class FXMLMenuPrincipalController implements Initializable {
                 btnMedicos.setVisible(true);
                 btnMedicos.setManaged(true);
             } else {
-                lbRol.setText("MÃƒÂ©dico");
+                lbRol.setText("Médico");
                 btnMedicos.setVisible(false);
                 btnMedicos.setManaged(false); // Elimina el espacio del botÃƒÂ³n
             }

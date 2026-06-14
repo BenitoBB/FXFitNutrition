@@ -2,6 +2,7 @@ package fxmlfitnutrition.vistas.consulta;
 
 import dominio.ConsultaImp;
 import dominio.PacienteImp;
+import dto.RespuestaSimple;
 import dto.RSPacientes;
 import java.io.IOException;
 import java.net.URL;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javafx.beans.property.SimpleStringProperty;
@@ -24,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -41,6 +44,8 @@ import utilidad.Utilidades;
 public class FXMLConsultasController implements Initializable, NotificacionOperacion {
 
     @FXML private Button btnRegistrar;
+    @FXML private Button btnModificar;
+    @FXML private Button btnCancelarConsulta;
     @FXML private Button btnLimpiarFechas;
     @FXML private ComboBox<Paciente> cbPaciente;
     @FXML private DatePicker dpFechaConsulta;
@@ -66,6 +71,8 @@ public class FXMLConsultasController implements Initializable, NotificacionOpera
         configurarFiltros();
         configurarCalendarioFechas();
         cargarPacientes();
+        btnModificar.setDisable(true);
+        btnCancelarConsulta.setDisable(true);
         cargarConsultas();
     }
 
@@ -80,6 +87,12 @@ public class FXMLConsultasController implements Initializable, NotificacionOpera
         colEstatus.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().isActiva() ? "Activa" : "Cancelada"));
         colObservaciones.setCellValueFactory(new PropertyValueFactory<>("observaciones"));
         tvConsultas.setItems(consultas);
+        tvConsultas.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            boolean sinSeleccion = newValue == null;
+            boolean cancelada = newValue != null && !newValue.isActiva();
+            btnModificar.setDisable(sinSeleccion || cancelada);
+            btnCancelarConsulta.setDisable(sinSeleccion || cancelada);
+        });
     }
 
     private void configurarFiltros() {
@@ -179,6 +192,72 @@ public class FXMLConsultasController implements Initializable, NotificacionOpera
             Utilidades.mostrarAlertaSimple("Error", "No se pudo cargar el formulario de consulta.", Alert.AlertType.ERROR);
         }
     }
+    @FXML
+    private void clicModificar(ActionEvent event) {
+        Consulta consultaSeleccionada = tvConsultas.getSelectionModel().getSelectedItem();
+        if (consultaSeleccionada == null) {
+            Utilidades.mostrarAlertaSimple("Atencion", "Selecciona una consulta.", Alert.AlertType.WARNING);
+            return;
+        }
+        if (!consultaSeleccionada.isActiva()) {
+            Utilidades.mostrarAlertaSimple("Atencion", "La consulta seleccionada ya esta cancelada.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("FXMLFormularioConsulta.fxml"));
+            Parent root = fxmlLoader.load();
+            FXMLFormularioConsultaController controlador = fxmlLoader.getController();
+            controlador.inicializarValores(this);
+            Paciente paciente = pacientesPorId.get(consultaSeleccionada.getIdPaciente());
+            if (paciente != null) {
+                controlador.inicializarPaciente(paciente);
+            }
+            controlador.inicializarParaEdicion(consultaSeleccionada);
+            Stage stage = new Stage();
+            stage.setTitle("Modificar Consulta");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Utilidades.mostrarAlertaSimple("Error", "No se pudo cargar el formulario de consulta.", Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void clicCancelarConsulta(ActionEvent event) {
+        Consulta consultaSeleccionada = tvConsultas.getSelectionModel().getSelectedItem();
+        if (consultaSeleccionada == null) {
+            Utilidades.mostrarAlertaSimple("Atencion", "Selecciona una consulta.", Alert.AlertType.WARNING);
+            return;
+        }
+        if (!consultaSeleccionada.isActiva()) {
+            Utilidades.mostrarAlertaSimple("Atencion", "La consulta seleccionada ya esta cancelada.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle("Cancelar Consulta");
+        alerta.setHeaderText("Confirmar cancelacion");
+        alerta.setContentText("La consulta se marcara como cancelada y no debera considerarse en el progreso real del paciente.");
+        Optional<ButtonType> respuestaConfirmacion = alerta.showAndWait();
+        if (!respuestaConfirmacion.isPresent() || respuestaConfirmacion.get() != ButtonType.OK) {
+            return;
+        }
+
+        RespuestaSimple respuesta = ConsultaImp.cancelarConsulta(consultaSeleccionada.getIdConsulta());
+        if (!respuesta.isError()) {
+            consultaSeleccionada.setCancelada(1);
+            tvConsultas.refresh();
+            btnModificar.setDisable(true);
+            btnCancelarConsulta.setDisable(true);
+            Utilidades.mostrarAlertaSimple("Consulta Cancelada", "La consulta se cancelo correctamente.", Alert.AlertType.INFORMATION);
+        } else {
+            Utilidades.mostrarAlertaSimple("Error", respuesta.getMensaje(), Alert.AlertType.ERROR);
+        }
+    }
+
 
     private void alternarFechaSeleccionada(LocalDate fecha) {
         if (fechasSeleccionadas.contains(fecha)) {
@@ -232,6 +311,8 @@ public class FXMLConsultasController implements Initializable, NotificacionOpera
     @Override
     public void notificarOperacionGuardar() {
         cargarPacientes();
+        btnModificar.setDisable(true);
+        btnCancelarConsulta.setDisable(true);
         cargarConsultas();
     }
 }

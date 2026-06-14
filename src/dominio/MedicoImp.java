@@ -80,6 +80,27 @@ public class MedicoImp {
         }
         return respuesta;
     }
+    public static Respuesta subirFotografia(int idMedico, byte[] fotografia) {
+        Respuesta respuesta = new Respuesta();
+        respuesta.setError(true);
+        try {
+            RespuestaHTTP http = ConexionAPI.peticionPUTImagen(
+                Constantes.URL_WS + "medico/subir-fotografia/" + idMedico,
+                fotografia
+            );
+            Gson gson = new Gson();
+            if (http.getCodigo() == 200) {
+                respuesta = gson.fromJson(http.getContenido(), Respuesta.class);
+            } else {
+                respuesta.setMensaje(Constantes.MSJ_ERROR_PETICION);
+            }
+        } catch (Exception e) {
+            respuesta.setMensaje(Constantes.MSJ_DEFAULT);
+            e.printStackTrace();
+        }
+        return respuesta;
+    }
+
     
     public static Respuesta darDeBajaMedico(RQBajaMedico rq) {
         Respuesta respuesta = new Respuesta();

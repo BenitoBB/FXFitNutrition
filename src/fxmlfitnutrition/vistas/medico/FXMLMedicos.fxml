@@ -18,11 +18,11 @@
           <TableColumn fx:id="colAdmin" prefWidth="150.0" text="Es Admin" />
         </columns>
       </TableView>
-      <Button fx:id="btnNuevo" layoutX="33.0" layoutY="79.0" mnemonicParsing="false" onAction="#clicNuevo" styleClass="button-create" text="Nuevo Médico" />
+      <Button fx:id="btnNuevo" layoutX="33.0" layoutY="79.0" mnemonicParsing="false" onAction="#clicNuevo" styleClass="button-create" text="Nuevo Personal" />
       <Button fx:id="btnEditar" layoutX="194.0" layoutY="79.0" mnemonicParsing="false" onAction="#clicEditar" styleClass="button-edit" text="Editar" />
       <Button fx:id="btnBaja" layoutX="301.0" layoutY="79.0" mnemonicParsing="false" onAction="#clicBaja" styleClass="button-delete" text="Dar Baja" />
-      <TextField fx:id="tfBuscar" layoutX="422.0" layoutY="77.0" prefHeight="42.0" prefWidth="393.0" promptText="Buscar médico..." />
-      <Label layoutX="40.0" layoutY="30.0" styleClass="label-title" text="Gestión de Personal Médico">
+      <TextField fx:id="tfBuscar" layoutX="422.0" layoutY="77.0" prefHeight="42.0" prefWidth="393.0" promptText="Buscar personal por nombre..." />
+      <Label layoutX="40.0" layoutY="30.0" styleClass="label-title" text="Gestión de Personal">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>

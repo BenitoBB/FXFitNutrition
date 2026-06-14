@@ -73,7 +73,7 @@ public class Utilidades {
     }
 
     public static void permitirSoloLetras(TextInputControl campo) {
-        aplicarFiltroTexto(campo, "[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ\\s]");
+        aplicarFiltroTexto(campo, "[^A-Za-zÃÃ‰ÃÃ“ÃšÃœÃ‘Ã¡Ã©Ã­Ã³ÃºÃ¼Ã±\\s]");
     }
 
     public static void permitirSoloNumerosDecimales(TextInputControl campo) {
@@ -97,12 +97,31 @@ public class Utilidades {
     }
 
     public static void permitirLetrasNumeros(TextInputControl campo) {
-        aplicarFiltroTexto(campo, "[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9\\s.,;:()\\-]");
+        aplicarFiltroTexto(campo, "[^A-Za-zÃÃ‰ÃÃ“ÃšÃœÃ‘Ã¡Ã©Ã­Ã³ÃºÃ¼Ã±0-9\\s.,;:()\\-]");
     }
 
     public static void permitirBusquedaNombreCorreo(TextInputControl campo) {
-        aplicarFiltroTexto(campo, "[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9\\s@._\\-]");
+        aplicarFiltroTexto(campo, "[^A-Za-zÃÃ‰ÃÃ“ÃšÃœÃ‘Ã¡Ã©Ã­Ã³ÃºÃ¼Ã±0-9\\s@._\\-]");
     }
+    public static void permitirSoloNumeros(TextInputControl campo) {
+        aplicarFiltroTexto(campo, "[^0-9]");
+    }
+
+    public static void permitirLetrasNumerosSinEspeciales(TextInputControl campo) {
+        aplicarFiltroTexto(campo, "[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9\\s]");
+    }
+
+    public static void limitarLongitud(TextInputControl campo, int maximo) {
+        if (campo == null || maximo <= 0) {
+            return;
+        }
+        campo.textProperty().addListener((observable, anterior, nuevo) -> {
+            if (nuevo != null && nuevo.length() > maximo) {
+                campo.setText(nuevo.substring(0, maximo));
+            }
+        });
+    }
+
 
     private static void aplicarFiltroTexto(TextInputControl campo, String patronInvalido) {
         if (campo == null) {

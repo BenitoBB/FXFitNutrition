@@ -44,7 +44,8 @@ public class FXMLMedicosController implements Initializable, NotificacionOperaci
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        configurarTabla();
+        
+        Utilidades.permitirSoloLetras(tfBuscar);configurarTabla();
         cargarDatosTabla("");
 
         tfBuscar.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -58,7 +59,7 @@ public class FXMLMedicosController implements Initializable, NotificacionOperaci
         colNombre.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNombreCompleto()));
         colCedula.setCellValueFactory(new PropertyValueFactory<>("cedulaProfesional"));
         colDireccion.setCellValueFactory(new PropertyValueFactory<>("direccionCompleta"));
-        colAdmin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().esAdmin() ? "Sí" : "No"));
+        colAdmin.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().esAdmin() ? "SÃ­" : "No"));
         
         listaMedicos = FXCollections.observableArrayList();
         tvMedicos.setItems(listaMedicos);
@@ -83,7 +84,7 @@ public class FXMLMedicosController implements Initializable, NotificacionOperaci
         if (medico != null) {
             abrirFormulario(medico);
         } else {
-            Utilidades.mostrarAlertaSimple("Atención", "Selecciona un médico de la tabla.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("AtenciÃ³n", "Selecciona un mÃ©dico de la tabla.", Alert.AlertType.WARNING);
         }
     }
 
@@ -95,7 +96,7 @@ public class FXMLMedicosController implements Initializable, NotificacionOperaci
             medicosDisponibles.remove(medicoSeleccionado);
             
             if (medicosDisponibles.isEmpty()) {
-                Utilidades.mostrarAlertaSimple("Error", "No hay otros médicos para reasignar a sus pacientes. Es necesario tener al menos otro médico activo.", Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error", "No hay otros mÃ©dicos para reasignar a sus pacientes. Es necesario tener al menos otro mÃ©dico activo.", Alert.AlertType.ERROR);
                 return;
             }
 
@@ -107,7 +108,7 @@ public class FXMLMedicosController implements Initializable, NotificacionOperaci
                 controlador.inicializarValores(medicoSeleccionado, medicosDisponibles, this);
 
                 Stage stage = new Stage();
-                stage.setTitle("Baja de Médico");
+                stage.setTitle("Baja de MÃ©dico");
                 stage.setScene(new Scene(root));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.showAndWait();
@@ -116,7 +117,7 @@ public class FXMLMedicosController implements Initializable, NotificacionOperaci
                 Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir la ventana de baja.", Alert.AlertType.ERROR);
             }
         } else {
-            Utilidades.mostrarAlertaSimple("Atención", "Por favor selecciona un médico de la tabla.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("AtenciÃ³n", "Por favor selecciona un mÃ©dico de la tabla.", Alert.AlertType.WARNING);
         }
     }
 
@@ -132,7 +133,7 @@ public class FXMLMedicosController implements Initializable, NotificacionOperaci
             }
 
             Stage stage = new Stage();
-            stage.setTitle(medico != null ? "Editar Médico" : "Registrar Médico");
+            stage.setTitle(medico != null ? "Editar MÃ©dico" : "Registrar MÃ©dico");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();

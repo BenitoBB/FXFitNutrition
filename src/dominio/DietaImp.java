@@ -30,7 +30,7 @@ public class DietaImp {
                     Constantes.APPLICATION_JSON
             );
 
-            if (http.getCodigo() == 200) {
+            if (http.getContenido() != null && http.getContenido().trim().startsWith("{")) {
                 respuesta = gson.fromJson(http.getContenido(), RespuestaSimple.class);
             } else {
                 respuesta.setMensaje(Constantes.MSJ_ERROR_PETICION);
@@ -87,7 +87,7 @@ public class DietaImp {
                     Constantes.APPLICATION_JSON
             );
 
-            if (http.getCodigo() == 200) {
+            if (http.getContenido() != null && http.getContenido().trim().startsWith("{")) {
                 respuesta = gson.fromJson(http.getContenido(), RespuestaSimple.class);
             } else {
                 respuesta.setMensaje(Constantes.MSJ_ERROR_PETICION);

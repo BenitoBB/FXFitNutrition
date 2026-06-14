@@ -3,6 +3,8 @@ package fxmlfitnutrition.vistas.medico;
 import dominio.DireccionImp;
 import dominio.MedicoImp;
 import dto.Respuesta;
+import java.io.File;
+import java.nio.file.Files;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -21,37 +23,39 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pojo.Direccion;
 import pojo.Domicilio;
 import pojo.Medico;
 import utilidad.NotificacionOperacion;
 import utilidad.Utilidades;
-import utilidad.Validaciones;
 
 public class FXMLMedicoFormularioController implements Initializable {
 
+    @FXML private Label lbTitulo;
+    @FXML private Label lbSubtitulo;
     @FXML private TextField tfNombre;
     @FXML private TextField tfPrimerApellido;
     @FXML private TextField tfSegundoApellido;
     @FXML private DatePicker dpFechaNacimiento;
     @FXML private RadioButton rbMasculino;
     @FXML private RadioButton rbFemenino;
-    
+
     @FXML private TextField tfCodigoPostal;
     @FXML private TextField tfEstado;
     @FXML private TextField tfCiudad;
     @FXML private ComboBox<Direccion> cbColonia;
     @FXML private TextField tfCalle;
     @FXML private TextField tfNumero;
-    
+
     @FXML private TextField tfCedula;
     @FXML private TextField tfNoPersonal;
     @FXML private PasswordField tfContrasena;
     @FXML private PasswordField tfRepetirContrasena;
     @FXML private CheckBox chkAdmin;
-    
-    @FXML private Label lbMensajeError;
+    @FXML private Label lbFotografia;
+
     @FXML private Button btnGuardar;
     @FXML private Button btnCancelar;
 
@@ -59,6 +63,7 @@ public class FXMLMedicoFormularioController implements Initializable {
     private NotificacionOperacion observador;
     private Medico medicoEdicion;
     private List<Direccion> coloniasActuales;
+    private byte[] fotografiaSeleccionada;
 
     public void inicializarValores(NotificacionOperacion observador) {
         this.observador = observador;
@@ -66,27 +71,30 @@ public class FXMLMedicoFormularioController implements Initializable {
 
     public void inicializarParaEdicion(Medico medico) {
         this.medicoEdicion = medico;
+        lbTitulo.setText("Editar medico");
+        lbSubtitulo.setText("Modifique los datos del usuario medico seleccionado");
         tfNombre.setText(medico.getNombre());
         tfPrimerApellido.setText(medico.getPrimerApellido());
         tfSegundoApellido.setText(medico.getSegundoApellido() != null ? medico.getSegundoApellido() : "");
-        
+
         if (medico.getFechaNacimiento() != null && !medico.getFechaNacimiento().isEmpty()) {
             dpFechaNacimiento.setValue(java.time.LocalDate.parse(medico.getFechaNacimiento()));
         }
-        
+
         if ("M".equals(medico.getSexo())) {
             rbMasculino.setSelected(true);
         } else if ("F".equals(medico.getSexo())) {
             rbFemenino.setSelected(true);
         }
-        
-        tfCedula.setText(medico.getCedulaProfesional());
+
+        tfCedula.setText(medico.getCedulaProfesional() != null ? medico.getCedulaProfesional() : "");
         tfNoPersonal.setText(medico.getNoPersonal() != null ? medico.getNoPersonal() : "");
         chkAdmin.setSelected(medico.getEsAdministrador() == 1);
-        
-        // No se pre-llena contraseña
-        tfContrasena.setPromptText("Dejar vacío para no cambiar");
-        tfRepetirContrasena.setPromptText("Dejar vacío para no cambiar");
+        actualizarEstadoCedulaAdministrador();
+
+        tfContrasena.setPromptText("Dejar vacio para no cambiar");
+        tfRepetirContrasena.setPromptText("Dejar vacio para no cambiar");
+        lbFotografia.setText(medico.getFotografia() != null && !medico.getFotografia().isEmpty() ? "Fotografia actual registrada" : "Sin fotografia seleccionada");
 
         if (medico.getDomicilio() != null) {
             Domicilio dom = medico.getDomicilio();
@@ -115,7 +123,9 @@ public class FXMLMedicoFormularioController implements Initializable {
         tgSexo = new ToggleGroup();
         rbMasculino.setToggleGroup(tgSexo);
         rbFemenino.setToggleGroup(tgSexo);
-        
+        configurarFiltrosEntrada();
+        configurarAdministrador();
+
         tfCodigoPostal.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -149,6 +159,30 @@ public class FXMLMedicoFormularioController implements Initializable {
         });
     }
 
+    private void configurarFiltrosEntrada() {
+        Utilidades.permitirSoloLetras(tfNombre);
+        Utilidades.permitirSoloLetras(tfPrimerApellido);
+        Utilidades.permitirSoloLetras(tfSegundoApellido);
+        Utilidades.permitirLetrasNumerosSinEspeciales(tfNumero);
+        Utilidades.limitarLongitud(tfCedula, 8);
+        Utilidades.permitirLetrasNumerosSinEspeciales(tfCedula);
+        Utilidades.permitirLetrasNumerosSinEspeciales(tfNoPersonal);
+    }
+
+    private void configurarAdministrador() {
+        chkAdmin.selectedProperty().addListener((observable, oldValue, newValue) -> actualizarEstadoCedulaAdministrador());
+        actualizarEstadoCedulaAdministrador();
+    }
+
+    private void actualizarEstadoCedulaAdministrador() {
+        boolean esAdmin = chkAdmin != null && chkAdmin.isSelected();
+        tfCedula.setDisable(esAdmin);
+        tfCedula.setPromptText(esAdmin ? "No aplica para administrador" : "Exactamente 8 caracteres");
+        if (esAdmin) {
+            tfCedula.clear();
+        }
+    }
+
     private void buscarDireccionPorCodigoPostal(String codigoPostal) {
         coloniasActuales = DireccionImp.obtenerDireccionPorCodigoPostal(codigoPostal);
         cbColonia.getItems().clear();
@@ -157,18 +191,37 @@ public class FXMLMedicoFormularioController implements Initializable {
 
         if (coloniasActuales != null && !coloniasActuales.isEmpty()) {
             cbColonia.getItems().addAll(coloniasActuales);
-            // Auto-seleccionar la primera colonia para llenar ciudad/estado automáticamente
             cbColonia.setValue(coloniasActuales.get(0));
         } else {
-            Utilidades.mostrarAlertaSimple("Sin resultados", "No se encontraron colonias para el código postal ingresado.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Sin resultados", "No se encontraron colonias para el codigo postal ingresado.", Alert.AlertType.WARNING);
+        }
+    }
+
+    @FXML
+    private void clicSeleccionarFotografia(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Seleccionar fotografia del medico");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Imagenes", "*.png", "*.jpg", "*.jpeg")
+        );
+        File archivo = fileChooser.showOpenDialog(btnGuardar.getScene().getWindow());
+        if (archivo == null) {
+            return;
+        }
+
+        try {
+            fotografiaSeleccionada = Files.readAllBytes(archivo.toPath());
+            lbFotografia.setText(archivo.getName());
+        } catch (Exception e) {
+            fotografiaSeleccionada = null;
+            lbFotografia.setText("Sin fotografia seleccionada");
+            Utilidades.mostrarAlertaSimple("Fotografia", "No fue posible leer la imagen seleccionada.", Alert.AlertType.ERROR);
         }
     }
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        lbMensajeError.setVisible(false);
         if (!validarCampos()) {
-            mostrarError("Por favor, llene todos los campos obligatorios.");
             return;
         }
 
@@ -178,21 +231,21 @@ public class FXMLMedicoFormularioController implements Initializable {
         medico.setSegundoApellido(tfSegundoApellido.getText().trim());
         medico.setFechaNacimiento(dpFechaNacimiento.getValue().toString());
         medico.setSexo(rbMasculino.isSelected() ? "M" : "F");
-        medico.setCedulaProfesional(tfCedula.getText().trim());
+        medico.setCedulaProfesional(chkAdmin.isSelected() ? "NOAPLICA" : tfCedula.getText().trim());
         medico.setNoPersonal(tfNoPersonal.getText().trim());
         medico.setEsAdministrador(chkAdmin.isSelected() ? 1 : 0);
-        
+
         String pass = tfContrasena.getText().trim();
         if (!pass.isEmpty()) {
             medico.setContrasena(pass);
         } else if (medicoEdicion == null) {
-            mostrarError("La contraseña es obligatoria para nuevos registros.");
+            mostrarError("La contrasena es obligatoria para nuevos registros.");
             return;
         }
 
         Direccion coloniaSeleccionada = cbColonia.getValue();
         if (coloniaSeleccionada == null) {
-            mostrarError("Seleccione una colonia válida.");
+            mostrarError("Seleccione una colonia valida.");
             return;
         }
 
@@ -200,61 +253,47 @@ public class FXMLMedicoFormularioController implements Initializable {
         dirEnvio.setCalle(tfCalle.getText().trim());
         dirEnvio.setNumero(tfNumero.getText().trim());
         dirEnvio.setIdColonia(coloniaSeleccionada.getIdColonia());
-        
+
         if (medicoEdicion != null && medicoEdicion.getDomicilio() != null && medicoEdicion.getDomicilio().getIdDomicilio() > 0) {
             dirEnvio.setIdDireccion(medicoEdicion.getDomicilio().getIdDomicilio());
             Respuesta respDir = DireccionImp.editar(dirEnvio);
             if (respDir.isError()) {
-                mostrarError("Error al actualizar la dirección: " + respDir.getMensaje());
+                mostrarError("Error al actualizar la direccion: " + respDir.getMensaje());
                 return;
             }
             medico.setIdDomicilio(medicoEdicion.getDomicilio().getIdDomicilio());
         } else {
             Respuesta respDir = DireccionImp.registrarDireccion(dirEnvio);
             if (respDir.isError()) {
-                mostrarError("Error al registrar la dirección: " + respDir.getMensaje());
+                mostrarError("Error al registrar la direccion: " + respDir.getMensaje());
                 return;
             }
-            try {
-                int idDireccionGen = -1;
-                if (respDir.getValor() != null && !String.valueOf(respDir.getValor()).equals("null")) {
-                    String idStr = String.valueOf(respDir.getValor());
-                    // Manejar formato extraño del JSON {type=string, value=41}
-                    if (idStr.contains("value=")) {
-                        idStr = idStr.replaceAll(".*value=([^}]+)}.*", "$1").trim();
-                    }
-                    if (idStr.endsWith(".0")) {
-                         idStr = idStr.substring(0, idStr.length() - 2);
-                    }
-                    idDireccionGen = Integer.parseInt(idStr);
-                } else if (respDir.getIdDireccion() != null) {
-                    idDireccionGen = respDir.getIdDireccion();
-                } else if (respDir.getIdDomicilio() != null) {
-                    idDireccionGen = respDir.getIdDomicilio();
-                } else {
-                    throw new Exception("El servidor no devolvió ningún ID de dirección.");
-                }
-
-                medico.setIdDomicilio(idDireccionGen);
-                if (medico.getDomicilio() != null) {
-                    medico.getDomicilio().setIdDomicilio(idDireccionGen);
-                }
-            } catch (Exception e) {
-                mostrarError("Error al recuperar el ID de la dirección registrada.");
+            Integer idDireccion = obtenerEnteroRespuesta(respDir.getValor());
+            if (idDireccion == null) {
+                idDireccion = respDir.getIdDireccion() != null ? respDir.getIdDireccion() : respDir.getIdDomicilio();
+            }
+            if (idDireccion == null || idDireccion <= 0) {
+                mostrarError("Error al recuperar el ID de la direccion registrada.");
                 return;
             }
+            medico.setIdDomicilio(idDireccion);
         }
 
-        Respuesta respuesta;
-        if (medicoEdicion != null) {
-            respuesta = MedicoImp.editarMedico(medico);
-        } else {
-            respuesta = MedicoImp.registrarMedico(medico);
-        }
+        Respuesta respuesta = medicoEdicion != null ? MedicoImp.editarMedico(medico) : MedicoImp.registrarMedico(medico);
 
         if (!respuesta.isError()) {
-            Utilidades.mostrarAlertaSimple("Éxito", respuesta.getMensaje(), Alert.AlertType.INFORMATION);
-            if (observador != null) observador.notificarOperacionGuardar();
+            int idMedico = medicoEdicion != null ? medicoEdicion.getIdMedico() : obtenerIdMedicoRegistrado(respuesta);
+            if (fotografiaSeleccionada != null && idMedico > 0) {
+                Respuesta respuestaFoto = MedicoImp.subirFotografia(idMedico, fotografiaSeleccionada);
+                if (respuestaFoto.isError()) {
+                    Utilidades.mostrarAlertaSimple("Fotografia", respuestaFoto.getMensaje(), Alert.AlertType.WARNING);
+                }
+            }
+
+            Utilidades.mostrarAlertaSimple("Exito", respuesta.getMensaje(), Alert.AlertType.INFORMATION);
+            if (observador != null) {
+                observador.notificarOperacionGuardar();
+            }
             cerrarVentana();
         } else {
             mostrarError(respuesta.getMensaje());
@@ -262,25 +301,62 @@ public class FXMLMedicoFormularioController implements Initializable {
     }
 
     private boolean validarCampos() {
-        if (tfNombre.getText().trim().isEmpty() || tfPrimerApellido.getText().trim().isEmpty() ||
-            dpFechaNacimiento.getValue() == null || (!rbMasculino.isSelected() && !rbFemenino.isSelected()) ||
-            tfCedula.getText().trim().isEmpty() || tfNoPersonal.getText().trim().isEmpty() || 
-            tfCalle.getText().trim().isEmpty() || tfNumero.getText().trim().isEmpty() || 
-            tfCodigoPostal.getText().trim().isEmpty()) {
+        if (tfNombre.getText().trim().isEmpty()
+                || tfPrimerApellido.getText().trim().isEmpty()
+                || dpFechaNacimiento.getValue() == null
+                || (!rbMasculino.isSelected() && !rbFemenino.isSelected())
+                || tfNoPersonal.getText().trim().isEmpty()
+                || tfCalle.getText().trim().isEmpty()
+                || tfNumero.getText().trim().isEmpty()
+                || tfCodigoPostal.getText().trim().isEmpty()) {
+            mostrarError("Por favor, llena todos los campos obligatorios.");
             return false;
         }
+
+        if (!chkAdmin.isSelected() && tfCedula.getText().trim().isEmpty()) {
+            mostrarError("La cedula profesional es obligatoria para usuarios medicos.");
+            return false;
+        }
+
+        if (!chkAdmin.isSelected() && tfCedula.getText().trim().length() != 8) {
+            mostrarError("La cedula profesional debe tener exactamente 8 caracteres.");
+            return false;
+        }
+
         String pass = tfContrasena.getText();
         String repass = tfRepetirContrasena.getText();
         if (!pass.equals(repass)) {
-            mostrarError("Las contraseñas no coinciden.");
+            mostrarError("La contrasena y su confirmacion deben coincidir.");
             return false;
         }
         return true;
     }
 
+    private int obtenerIdMedicoRegistrado(Respuesta respuesta) {
+        Integer id = obtenerEnteroRespuesta(respuesta.getValor());
+        return id != null ? id : 0;
+    }
+
+    private Integer obtenerEnteroRespuesta(Object valor) {
+        if (valor == null) {
+            return null;
+        }
+        try {
+            String idStr = String.valueOf(valor);
+            if (idStr.contains("value=")) {
+                idStr = idStr.replaceAll(".*value=([^}]+)}.*", "$1").trim();
+            }
+            if (idStr.endsWith(".0")) {
+                idStr = idStr.substring(0, idStr.length() - 2);
+            }
+            return Integer.parseInt(idStr);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     private void mostrarError(String mensaje) {
-        lbMensajeError.setText(mensaje);
-        lbMensajeError.setVisible(true);
+        Utilidades.mostrarAlertaSimple("Validacion", mensaje, Alert.AlertType.WARNING);
     }
 
     @FXML

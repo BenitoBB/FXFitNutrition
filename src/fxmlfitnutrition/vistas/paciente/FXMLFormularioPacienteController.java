@@ -101,6 +101,7 @@ public class FXMLFormularioPacienteController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cbSexo.getItems().addAll("M", "F");
+        configurarFiltrosEntrada();
 
         // Listener: when postal code reaches 5 digits, auto-query the API
         tfCodigoPostal.textProperty().addListener(new ChangeListener<String>() {
@@ -139,6 +140,14 @@ public class FXMLFormularioPacienteController implements Initializable {
             }
         });
     }
+    private void configurarFiltrosEntrada() {
+        Utilidades.permitirSoloLetras(tfNombre);
+        Utilidades.permitirSoloLetras(tfPrimerApellido);
+        Utilidades.permitirSoloLetras(tfSegundoApellido);
+        Utilidades.permitirSoloNumeros(tfTelefono);
+        Utilidades.limitarLongitud(tfTelefono, 10);
+    }
+
 
     /**
      * Calls the API to get colonias for the given postal code and populates the cbColonia ComboBox.
@@ -159,9 +168,7 @@ public class FXMLFormularioPacienteController implements Initializable {
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        lbMensajeError.setVisible(false);
-
-        // 1. Validaciones
+// 1. Validaciones
         if (Validaciones.esVacio(tfNombre.getText()) ||
             Validaciones.esVacio(tfPrimerApellido.getText()) ||
             dpFechaNacimiento.getValue() == null ||
@@ -238,7 +245,7 @@ public class FXMLFormularioPacienteController implements Initializable {
                 int idDireccionGen = -1;
                 if (respDir.getValor() != null && !String.valueOf(respDir.getValor()).equals("null")) {
                     String idStr = String.valueOf(respDir.getValor());
-                    // Manejar formato extraño del JSON {type=string, value=41}
+                    // Manejar formato extraÃƒÂ±o del JSON {type=string, value=41}
                     if (idStr.contains("value=")) {
                         idStr = idStr.replaceAll(".*value=([^}]+)}.*", "$1").trim();
                     }
@@ -307,8 +314,7 @@ public class FXMLFormularioPacienteController implements Initializable {
     }
 
     private void mostrarError(String mensaje) {
-        lbMensajeError.setText(mensaje);
-        lbMensajeError.setVisible(true);
+        Utilidades.mostrarAlertaSimple("Validación", mensaje, Alert.AlertType.WARNING);
     }
 
     private void cerrarVentana() {

@@ -84,7 +84,7 @@ public class FXMLFormularioConsultaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarSpinners();
         cargarPacientes();
-        cargarCitas();
+        cargarCitas(null);
         cargarDietas();
         configurarListeners();
         configurarFiltrosEntrada();
@@ -147,13 +147,22 @@ public class FXMLFormularioConsultaController implements Initializable {
         }
     }
 
-    private void cargarCitas() {
+    private void cargarCitas(Paciente pacienteSeleccionado) {
         List<Cita> citas = new ArrayList<>();
         agregarCitasPorEstatus(citas, "Confirmada");
         agregarCitasPorEstatus(citas, "Reagendada");
+        if (pacienteSeleccionado != null) {
+            List<Cita> filtradas = new ArrayList<>();
+            for (Cita cita : citas) {
+                if (cita.getIdPaciente() == pacienteSeleccionado.getIdPaciente()) {
+                    filtradas.add(cita);
+                }
+            }
+            citas = filtradas;
+        }
         cbCitaAsociada.setItems(FXCollections.observableArrayList(citas));
+        cbCitaAsociada.getSelectionModel().clearSelection();
     }
-
     private void agregarCitasPorEstatus(List<Cita> citas, String estatus) {
         List<CitaDetalle> citasEstatus = CitaImp.buscarCitas(
                 "",
@@ -179,6 +188,7 @@ public class FXMLFormularioConsultaController implements Initializable {
         cbPaciente.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null && !modoEdicion) {
                 precargarMedicionesPaciente(newValue);
+                cargarCitas(newValue);
             }
         });
 
@@ -274,6 +284,7 @@ public class FXMLFormularioConsultaController implements Initializable {
         }
 
         seleccionarPacientePorId(consultaEdicion.getIdPaciente());
+        cargarCitas(cbPaciente.getValue());
         seleccionarCitaPorId(consultaEdicion.getIdCita());
         seleccionarDietaPorId(consultaEdicion.getIdDieta());
 

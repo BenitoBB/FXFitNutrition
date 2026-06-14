@@ -65,7 +65,7 @@ public class FXMLDietasController implements Initializable, NotificacionOperacio
         tvDietas.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             boolean sinSeleccion = newValue == null;
             btnEditar.setDisable(sinSeleccion || newValue.getEditable() == 0);
-            btnEliminar.setDisable(sinSeleccion);
+            btnEliminar.setDisable(sinSeleccion || newValue.getEditable() == 0);
             cargarDetalle(newValue);
         });
     }
@@ -102,7 +102,6 @@ public class FXMLDietasController implements Initializable, NotificacionOperacio
             Utilidades.mostrarAlertaSimple("Atencion", "Selecciona una dieta.", Alert.AlertType.WARNING);
             return;
         }
-
         if (dietaSeleccionada.getEditable() == 0) {
             Utilidades.mostrarAlertaSimple("Dieta Bloqueada", "La dieta esta asignada a mas de un paciente y no puede editarse.", Alert.AlertType.WARNING);
             return;
@@ -141,9 +140,14 @@ public class FXMLDietasController implements Initializable, NotificacionOperacio
             return;
         }
 
+        if (dietaSeleccionada.getEditable() == 0) {
+            Utilidades.mostrarAlertaSimple("Dieta Bloqueada", "La dieta esta asignada a mas de un paciente y no puede eliminarse.", Alert.AlertType.WARNING);
+            return;
+        }
+
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         alerta.setTitle("Eliminar Dieta");
-        alerta.setHeaderText("Confirmar eliminacion");
+        alerta.setHeaderText("Confirmar eliminaci\u00f3n");
         alerta.setContentText("La dieta se eliminara del catalogo si no esta en uso.");
         Optional<ButtonType> respuestaConfirmacion = alerta.showAndWait();
         if (!respuestaConfirmacion.isPresent() || respuestaConfirmacion.get() != ButtonType.OK) {
@@ -158,7 +162,7 @@ public class FXMLDietasController implements Initializable, NotificacionOperacio
         } else {
             String mensaje = respuesta.getMensaje() != null ? respuesta.getMensaje() : "";
             if (mensaje.toLowerCase().contains("consulta") || mensaje.toLowerCase().contains("foreign key")) {
-                mensaje = "La dieta está asignada a consultas y no puede eliminarse.";
+                mensaje = "La dieta esta asignada a consultas y no puede eliminarse.";
             }
             Utilidades.mostrarAlertaSimple("Error", mensaje, Alert.AlertType.ERROR);
         }
