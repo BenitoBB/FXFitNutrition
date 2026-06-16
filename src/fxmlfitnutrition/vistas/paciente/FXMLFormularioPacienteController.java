@@ -1,6 +1,7 @@
 package fxmlfitnutrition.vistas.paciente;
 
 import dominio.DireccionImp;
+import dominio.MedicoImp;
 import dominio.PacienteImp;
 import dto.RSRegistroPaciente;
 import java.net.URL;
@@ -10,6 +11,7 @@ import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -18,9 +20,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import pojo.Direccion;
 import pojo.Domicilio;
+import pojo.Medico;
 import pojo.Paciente;
 import utilidad.NotificacionOperacion;
 import utilidad.Sesion;
@@ -37,6 +41,8 @@ public class FXMLFormularioPacienteController implements Initializable {
     @FXML private ComboBox<String> cbSexo;
     @FXML private TextField tfTelefono;
     @FXML private TextField tfCorreo;
+    @FXML private VBox vbMedicoAsignado;
+    @FXML private ComboBox<Medico> cbMedicoAsignado;
 
     @FXML private TextField tfCalle;
     @FXML private TextField tfNumero;
@@ -60,6 +66,7 @@ public class FXMLFormularioPacienteController implements Initializable {
     public void inicializarParaEdicion(Paciente paciente) {
         this.pacienteEdicion = paciente;
         lbTitulo.setText("Editar Paciente");
+        configurarAsignacionMedico();
 
         tfNombre.setText(paciente.getNombre());
         tfPrimerApellido.setText(paciente.getPrimerApellido());
@@ -102,6 +109,7 @@ public class FXMLFormularioPacienteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cbSexo.getItems().addAll("M", "F");
         configurarFiltrosEntrada();
+        configurarAsignacionMedico();
 
         // Listener: when postal code reaches 5 digits, auto-query the API
         tfCodigoPostal.textProperty().addListener(new ChangeListener<String>() {
@@ -148,6 +156,35 @@ public class FXMLFormularioPacienteController implements Initializable {
         Utilidades.limitarLongitud(tfTelefono, 10);
     }
 
+    private void configurarAsignacionMedico() {
+        if (vbMedicoAsignado == null || cbMedicoAsignado == null) {
+            return;
+        }
+
+        boolean mostrarSelector = Sesion.isEsAdministrador() && pacienteEdicion == null;
+        vbMedicoAsignado.setVisible(mostrarSelector);
+        vbMedicoAsignado.setManaged(mostrarSelector);
+
+        if (!mostrarSelector) {
+            cbMedicoAsignado.getItems().clear();
+            cbMedicoAsignado.setValue(null);
+            return;
+        }
+
+        List<Medico> medicos = MedicoImp.buscarMedicos("", true);
+        if (medicos == null || medicos.isEmpty()) {
+            cbMedicoAsignado.getItems().clear();
+            Utilidades.mostrarAlertaSimple(
+                    "Medicos",
+                    "No hay medicos activos disponibles para asignar el paciente.",
+                    Alert.AlertType.WARNING
+            );
+            return;
+        }
+
+        cbMedicoAsignado.setItems(FXCollections.observableArrayList(medicos));
+    }
+
 
     /**
      * Calls the API to get colonias for the given postal code and populates the cbColonia ComboBox.
@@ -184,6 +221,11 @@ public class FXMLFormularioPacienteController implements Initializable {
             return;
         }
 
+        if (pacienteEdicion == null && Sesion.isEsAdministrador() && cbMedicoAsignado.getValue() == null) {
+            mostrarError("Selecciona el medico al que se asignara el paciente.");
+            return;
+        }
+
         if (!Validaciones.esTelefonoValido(tfTelefono.getText())) {
             mostrarError("El teléfono debe tener exactamente 10 dígitos numéricos.");
             return;
@@ -204,7 +246,15 @@ public class FXMLFormularioPacienteController implements Initializable {
         paciente.setTelefono(tfTelefono.getText().trim());
         paciente.setEmail(tfCorreo.getText().trim());
         if (pacienteEdicion == null) {
-            paciente.setIdMedico(Sesion.getMedicoSesion().getIdMedico());
+            if (Sesion.isEsAdministrador()) {
+                paciente.setIdMedico(cbMedicoAsignado.getValue().getIdMedico());
+            } else {
+                if (Sesion.getMedicoSesion() == null || Sesion.getMedicoSesion().getIdMedico() <= 0) {
+                    mostrarError("No se pudo identificar al medico de la sesion.");
+                    return;
+                }
+                paciente.setIdMedico(Sesion.getMedicoSesion().getIdMedico());
+            }
         }
 
         // Build Domicilio with the selected colonia's idColonia

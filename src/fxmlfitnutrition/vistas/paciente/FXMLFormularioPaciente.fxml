@@ -63,8 +63,13 @@
                      <Label text="Correo Electrónico *" />
                      <TextField fx:id="tfCorreo" />
                   </VBox>
+                  <VBox fx:id="vbMedicoAsignado" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                     <Label text="Medico asignado *" />
+                     <ComboBox fx:id="cbMedicoAsignado" maxWidth="Infinity" promptText="Selecciona el medico responsable" />
+                  </VBox>
                </children>
                <rowConstraints>
+                  <RowConstraints />
                   <RowConstraints />
                   <RowConstraints />
                   <RowConstraints />
